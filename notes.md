@@ -67,41 +67,29 @@ mv list_all_refseqs.txt ~/projects/mangrove_killifish_project/refseq_download
 ~~One that is python /refseq_download/download_reseqs_parallel.py~~
 
 ~~download_parallel_wrapper.sh~~
-```
-#!/bin/bash
-python base/refseq_download/download_refseqs_parallel.py 0 &
-python base/refseq_download/download_refseqs_parallel.py 1 &
-python base/refseq_download/download_refseqs_parallel.py 2 &
-python base/refseq_download/download_refseqs_parallel.py 3 &
-python base/refseq_download/download_refseqs_parallel.py 4 &
-python base/refseq_download/download_refseqs_parallel.py 5 &
-python base/refseq_download/download_refseqs_parallel.py 6 &
-python base/refseq_download/download_refseqs_parallel.py 7 &
-python base/refseq_download/download_refseqs_parallel.py 8 &
-python base/refseq_download/download_refseqs_parallel.py 9 &
-wait
-```
+
 ~~This script runs the python script multiple times so that the whole process goes by faster (probably more useful for bigger data sets, don't know if necessary)~~
 
-
 ~~download_refseqs_parallel.py~~
-```
-import sys
-import subprocess
-N = int(sys.argv[1])
-filenames = []
-with open('/projects/mangrove_killifish_project/refseq_download/list_all_refseqs.txt') as F:
- for line in F:
- name = line.strip()
- filenames.append(name)
-# Start at position N and go to the end in 10 step intervals
-for i in filenames[N::10]:
- subprocess.check_call("~/.aspera/connect/bin/ascp -i ~/.aspera/connect/etc/asperaweb_id_dsa.openssh -k 1 -T -l800m anonftp@ftp.ncbi.nlm.nih.gov:/sra/refseq/{0} \
- /projects/mangrove_killifish_project/refseq/".format(i), shell=True)
- ```
+
  
  Just kidding I do not have aspera on my farm cluster account. rip
  
+ Will manually use prefetch on all the files.
+ 
+ ```
+ prvasque@farm:~/projects/mangrove_killifish_project/raw_data/sra$ prefetch SRR6925941
+
+2018-07-09T22:49:44 prefetch.2.8.2: 1) Downloading 'SRR6925941'...
+2018-07-09T22:49:44 prefetch.2.8.2:  Downloading via https...
+2018-07-09T22:51:25 prefetch.2.8.2: 1) 'SRR6925941' was downloaded successfully
+2018-07-09T22:51:25 prefetch.2.8.2: 'SRR6925941' has 0 unresolved dependencies
+prvasque@farm:~/projects/mangrove_killifish_project/raw_data/sra$ ls
+SRR6925941.sra
+```
+Prefetch works to get the .sra file. Tomorrow I will create a script that uses prefetch to download ALL the .sra files that I need.
+
+baby steps
  
 
 
