@@ -54,19 +54,19 @@ vdb-config -i
 
 ~~### 2. Refseq download~~
 ~~Created a textfile of all the names of all the different refseq files called list_all_refseqs.txt (There are around 9600)~~
-~~Sent that file to my farm cluster.
+~~Sent that file to my farm cluster.~~
 ```
 scp -P 2022 list_all_refseqs.txt prvasque@farm.cse.ucdavis.edu:/home/prvasque/projects/
 ```
-Then I moved the file to the mangrove_killifish folder
+~~Then I moved the file to the mangrove_killifish folder~~
 ```
 mv list_all_refseqs.txt ~/projects/mangrove_killifish_project/refseq_download
 ```
-There are two different scripts for the next part.
-One that is shell /reseq_download/download_parallel_wrapper.sh
-One that is python /refseq_download/download_reseqs_parallel.py
+~~There are two different scripts for the next part.~~
+~~One that is shell /reseq_download/download_parallel_wrapper.sh~~
+~~One that is python /refseq_download/download_reseqs_parallel.py~~
 
-~~download_parallel_wrapper.sh
+~~download_parallel_wrapper.sh~~
 ```
 #!/bin/bash
 python base/refseq_download/download_refseqs_parallel.py 0 &
@@ -81,10 +81,10 @@ python base/refseq_download/download_refseqs_parallel.py 8 &
 python base/refseq_download/download_refseqs_parallel.py 9 &
 wait
 ```
-This script runs the python script multiple times so that the whole process goes by faster (probably more useful for bigger data sets, don't know if necessary)
+~~This script runs the python script multiple times so that the whole process goes by faster (probably more useful for bigger data sets, don't know if necessary)~~
 
 
-~~download_refseqs_parallel.py
+~~download_refseqs_parallel.py~~
 ```
 import sys
 import subprocess
@@ -99,7 +99,7 @@ for i in filenames[N::10]:
  subprocess.check_call("~/.aspera/connect/bin/ascp -i ~/.aspera/connect/etc/asperaweb_id_dsa.openssh -k 1 -T -l800m anonftp@ftp.ncbi.nlm.nih.gov:/sra/refseq/{0} \
  /projects/mangrove_killifish_project/refseq/".format(i), shell=True)
  ```
- ~~
+ 
  Just kidding I do not have aspera on my farm cluster account. rip
  
  
