@@ -42,7 +42,7 @@ prvasque@c11-42:~/projects/mangrove_killifish_project/raw_data$ fastq-dump --spl
 Fastq-dump command is taking a while. Will probably have to create an iteration. Will probably download all the .sra files then convert on cluster.
 I canceled the command early using ^C and looked at the files that appeared. SRR6926018_1.fastq has over 10,000 lines each with a length of 150. I don't know if this is the fully downloaded version or not because it continues to scroll forever.
 
-~~# Download guide
+~~# Download guide~~
 https://wiki.ncsa.illinois.edu/download/attachments/44958475/SRA_Download_BW.%20Final.Aug18_2017.pdf?version=1&modificationDate=1505510727000&api=v2
 
 ~~This document is a step-by-step guide for downloading very large datasets and I will try to follow it.
