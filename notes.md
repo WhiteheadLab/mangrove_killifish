@@ -42,19 +42,68 @@ prvasque@c11-42:~/projects/mangrove_killifish_project/raw_data$ fastq-dump --spl
 Fastq-dump command is taking a while. Will probably have to create an iteration. Will probably download all the .sra files then convert on cluster.
 I canceled the command early using ^C and looked at the files that appeared. SRR6926018_1.fastq has over 10,000 lines each with a length of 150. I don't know if this is the fully downloaded version or not because it continues to scroll forever.
 
-# Download guide
+~~# Download guide
 https://wiki.ncsa.illinois.edu/download/attachments/44958475/SRA_Download_BW.%20Final.Aug18_2017.pdf?version=1&modificationDate=1505510727000&api=v2
 
-This document is a step-by-step guide for downloading very large datasets and I will try to follow it.
+~~This document is a step-by-step guide for downloading very large datasets and I will try to follow it.
 ### 1. vdb-config
 ```
 vdb-config -i
 ```
 Changed the project space location to /home/prvasque/projects/mangrove_killifish_project/raw_data
 
-### 2. Refseq download
+~~### 2. Refseq download
 Created a textfile of all the names of all the different refseq files called list_all_refseqs.txt (There are around 9600)
 Sent that file to my farm cluster.
+```
+scp -P 2022 list_all_refseqs.txt prvasque@farm.cse.ucdavis.edu:/home/prvasque/projects/
+```
+Then I moved the file to the mangrove_killifish folder
+```
+mv list_all_refseqs.txt ~/projects/mangrove_killifish_project/refseq_download
+```
+There are two different scripts for the next part.
+One that is shell /reseq_download/download_parallel_wrapper.sh
+One that is python /refseq_download/download_reseqs_parallel.py
+
+~~download_parallel_wrapper.sh
+```
+#!/bin/bash
+python base/refseq_download/download_refseqs_parallel.py 0 &
+python base/refseq_download/download_refseqs_parallel.py 1 &
+python base/refseq_download/download_refseqs_parallel.py 2 &
+python base/refseq_download/download_refseqs_parallel.py 3 &
+python base/refseq_download/download_refseqs_parallel.py 4 &
+python base/refseq_download/download_refseqs_parallel.py 5 &
+python base/refseq_download/download_refseqs_parallel.py 6 &
+python base/refseq_download/download_refseqs_parallel.py 7 &
+python base/refseq_download/download_refseqs_parallel.py 8 &
+python base/refseq_download/download_refseqs_parallel.py 9 &
+wait
+```
+This script runs the python script multiple times so that the whole process goes by faster (probably more useful for bigger data sets, don't know if necessary)
+
+
+~~download_refseqs_parallel.py
+```
+import sys
+import subprocess
+N = int(sys.argv[1])
+filenames = []
+with open('/projects/mangrove_killifish_project/refseq_download/list_all_refseqs.txt') as F:
+ for line in F:
+ name = line.strip()
+ filenames.append(name)
+# Start at position N and go to the end in 10 step intervals
+for i in filenames[N::10]:
+ subprocess.check_call("~/.aspera/connect/bin/ascp -i ~/.aspera/connect/etc/asperaweb_id_dsa.openssh -k 1 -T -l800m anonftp@ftp.ncbi.nlm.nih.gov:/sra/refseq/{0} \
+ /projects/mangrove_killifish_project/refseq/".format(i), shell=True)
+ ```
+ ~~
+ Just kidding I do not have aspera on my farm cluster account. rip
+ 
+ 
+
 
 
 
