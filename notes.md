@@ -348,8 +348,52 @@ SRR6925941_1.fastq.gz  SRR6925941_2.fastq.gz
 So my script is running but these are still the only files in /fastq/ after 6 minutes. Hopefully fastq-dump just takes a while. BUT, the files that are there are in the correct format. Yay.
 Soooo turns out using gzip takes a ton of time. Which is probably responsible for why it is taking so long.
 In 45 minutes, only about 4Gb of the SRR*.fastq.gz has been written
-Turns out that gziping does take a very long time. VERY. LONG. TIME.!$%#@$%@#$^
+Turns out that gziping does take a very long time.
 Emailed the help support to see what is the maximum amount of memory I could use to do this in a faster way.
+Turns out the best way to do this is to copy the files into /scratch/, on a node to do the `fastq-dump -I --gzip` there. Then copy the return files from that to my ~/fastq directory. All of this can be done with the script and using arrays.
+
+```
+fastqdump.sh
+```
+```
+#!/bin/bash -l
+#SBATCH -J fastqdump
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+#SBATCH -o /home/prvasque/slurm-log/fastqdump_stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/fastqdump_stderr-%j.txt
+#SBATCH -t 12:00:00
+#SBATCH -c 2
+
+module load sratoolkit
+
+DIR=/scratch/prvasque/$SLURM_JOBIDls
+mkdir -p $DIR
+
+cp /home/prvasque/projects/mangrove_killifish_project/raw_data/sra/SRR69$SLURM_ARRAY_TASK_ID.sra $DIR
+
+fastq-dump -I --split-files --gzip $DIR/SRR69$SLURM_ARRAY_TASK_ID.sra 
+
+cp $DIR/*.fastq.gz /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+
+# rm -rf /scratch/prvasque/$SLURM_JOBID
+```
+I will run this script with this command `sbatch --array=25941-26018 fastqdump.sh`
+
+Shout out the help people for farm for this major help.
+Analysis: For this script what it does is it makes a new job for EACH of the .sra files.
+For each .sra file:
+1. make a unique directory in a nodd for the .sra file
+2. copy the .sra to the directory in step 1
+3. preform the fastq-dump command as well as gzip it
+4. copy the output .fastq.gz file to my ~/fastq/ directory
+5. delete the unique directory in step 1
+
+So now I SHOULD have all my .fastq.gz files in my ~/fastq/ directory
+
+It didnt work, but its because my pathing was all messed up.
+
+Now it works! Please disregard past messages.
+All the .fastq.gz files are in the correct directory. Next step is to run fastqc analysis.
 
 
 
