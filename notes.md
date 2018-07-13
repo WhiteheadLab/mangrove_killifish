@@ -288,6 +288,70 @@ SRR6925993 - worked
 YAY!! All the data is now downloaded from ncbi to my farm account. Next step is to use fastq-dump to make all the .sra files into .fastq files so i can run fastqc on them.
 
 
+7/13/18
+
+# Script for running fastq-dump on all my .sra files
+
+Fastq-dump is a command in sratoolkit that changes files into the .fastq format which is needed for fastqc analysis.
+For this script:
+1. Import sratoolkit module which contains fastq-dump command
+2. Run fastq-dump on all my .sra files (for \*.sra in /home/prvasque/projects/mangrove_killifish_project/raw_data/sra/)
+3. Output .fastq files to a directory (/home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/)
+
+**Notes:**
+The .sra files are currently paired and for fastqc analysis I need to unpair them. --split-files flag will split each read into a seperate file.
+-I flag will add a .1 or .2 to end of file to signify read id. Don't know if necessary but it seems useful.
+-O <path> will signify where I want the output to go. However, default is current working directory so it may be better to just `cd $DIR` beforehand
+In Yunwei's fastqc script all his files end with .fastq.gz to gzip all the files I can also use the flag --gzip to automate the process in the script.
+ 
+ 
+
+```
+fastqdump.sh
+```
+```
+#!/bin/bash -l
+#SBATCH --mem=16000
+#SBATCH -J fastqdump
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+#SBATCH -o /home/prvasque/slurm-log/fastqdump_stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/fastqdump_stderr-%j.txt
+
+module load sratoolkit
+
+DIR="/home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/"
+
+cd $DIR
+
+for file in /home/prvasque/projects/mangrove_killifish_project/raw_data/sra/*.sra
+do 
+ fastq-dump -I --split-files --gzip $file
+done
+```
+I assume this will work.
+First, log into a node on farm cluster
+
+**NEED TO CREATE A DIRECTORY FOR THE #SBATCH -e and -o**
+(Didn't do this for the first script so I may have lost the logs, rip)
+
+
+```
+prvasque@farm:~/projects/mangrove_killifish_project/scripts$ sbatch -p high -t 6:00:00 fastqdump.sh
+```
+Job is running!
+`23520363      high fastqdum prvasque  R        0:05      1 6   16000M c8-62`
+And stuff is appearing in my /raw_data/fastq/
+```
+prvasque@farm:~/projects/mangrove_killifish_project/raw_data/fastq$ ls
+SRR6925941_1.fastq.gz  SRR6925941_2.fastq.gz
+```
+So my script is running but these are still the only files in /fastq/ after 6 minutes. Hopefully fastq-dump just takes a while. BUT, the files that are there are in the correct format. Yay.
+Soooo turns out using gzip takes a ton of time. Which is probably responsible for why it is taking so long.
+In 45 minutes, only about 4Gb of the SRR*.fastq.gz has been written
+Turns out that gziping does take a very long time. VERY. LONG. TIME.!$%#@$%@#$^
+Emailed the help support to see what is the maximum amount of memory I could use to do this in a faster way.
+
+
 
 
 
