@@ -444,7 +444,9 @@ So to run trimmomatic I need to take both pairs of a read (the \_1.fastq.gz and 
 My command will look like this
 Assuming I am in the directory of all the untrimmed files
 ```
-java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE (*_1.fastq.gz) (*_2.fastq.gz) (Out directory/*_1.qc.fq.gz) (Out directory/s1_se) (Out directory/*_2.qc.fq.gz) (Out directory/s2_se) ILLUMINACLIP:(What ever the adaptors is):2:40:15 LEADING:2 TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
+java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE (*_1.fastq.gz) (*_2.fastq.gz) (Out directory/*_1.qc.fq.gz) \
+(Out directory/s1_se) (Out directory/*_2.qc.fq.gz) (Out directory/s2_se) \
+ILLUMINACLIP:(What ever the adaptors is):2:40:15 LEADING:2 TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
 ```
 
 
