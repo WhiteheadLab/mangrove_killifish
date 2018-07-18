@@ -444,9 +444,85 @@ So to run trimmomatic I need to take both pairs of a read (the \_1.fastq.gz and 
 My command will look like this
 Assuming I am in the directory of all the untrimmed files
 ```
-java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE (*_1.fastq.gz) (*_2.fastq.gz) (Out directory/*_1.qc.fq.gz) \
-(Out directory/s1_se) (Out directory/*_2.qc.fq.gz) (Out directory/s2_se) \
-ILLUMINACLIP:(What ever the adaptors is):2:40:15 LEADING:2 TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
+java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE (*_1.fastq.gz) (*_2.fastq.gz) \
+(Out directory/*_1.qc.fq.gz) (Out directory/s1_se) (Out directory/*_2.qc.fq.gz) \ 
+(Out directory/s2_se) ILLUMINACLIP:(What ever the adaptors is):2:40:15 LEADING:2 \ 
+TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
 ```
+This will leave me with 4 different file types in my out directory, my two trimmed files for every pair as well as orphans.
+So I need to move the s1_se and s2_se files to their out directory because they are orphans then delete the files
+```
+gzip -9c (out directory/s1_se) (out directory/s2_se) >> (out directory/orphans.fq.gz
+rm -f (out directory/s1_se) (out directory/s2_se)
+```
+
+
+Copied the adaptor over to my cluster
+```
+prvasque@farm:/home/ywdong/bin/Trimmomatic-0.36/adapters$ cp NEBnextAdapt.fa /home/prvasque/projects/mangrove_killifish_project/trim/adapters/
+```
+
+Okay so I should be able to run one of the samples with no errors with this command
+```
+java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE SRR6925941_1.fastq.gz SRR6925941_2.fastq.gz /home/prvasque/projects/mangrove_killifish_project/trim/data/SRR6925941_1.qc.fq.gz /home/prvasque/projects/mangrove_killifish_project/trim/data/s1_se /home/prvasque/projects/mangrove_killifish_project/trim/data/SRR6925941_2.qc.fq.gz /home/prvasque/projects/mangrove_killifish_project/trim/data/s2_se ILLUMINACLIP:/home/prvasque/projects/mangrove_killifish_project/trim/adaptors/NEBnextAdapt.fa:2:40:15 LEADING:2 TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
+```
+Got an error right off the bat 
+```
+java.io.FileNotFoundException: /home/prvasque/projects/mangrove_killifish_project/trim/adaptors/NEBnextAdapt.fa (No such file or directory)
+```
+Okay I misspelled adapters oops. Rerunning with adapters correctly spelled.
+
+Seems like it will work, Ill write up a script now to have it run overnight.
+```
+trimmomatic.sh
+```
+```
+#!/bin/bash -l
+#SBATCH -c 24
+#SBATCH --mem=16000
+#SBATCH -J trimmomatic
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+#SBATCH -o /home/prvasque/slurm-log/trimmomatic_stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/trimmomatic_stderr-%j.txt
+
+module load trimmomatic
+
+DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+outdir=/home/prvasque/projects/mangrove_killifish_project/trim/data/
+
+cd $DIR
+
+for filename in *_1.fastq.gz
+do
+ base=$(basename $filename .fastq.gz)
+ echo $base
+ 
+ base2=${base/_1/_2}
+ echo $base2
+ 
+ java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE ${base}.fastq.gz ${base2}.fastq.gz \
+ $outdir/${base}.qc.fq.gz $outdir/s1_se \
+ $outdir/${base2}.qc.fq.gz $outdir/s2_se \
+ ILLUMINACLIP:/home/prvasque/projects/mangrove_killifish_project/trim/adaptors/NEBnextAdapt.fa:2:40:15 \
+ LEADING:2 TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
+ 
+ gzip -9c $outdir/s1_se $outdir/s2_se >> $outdir/orphans.fq.gz
+ rm -f $outdir/s1_se $outdir/s2_se
+done
+```
+Some weird things I notice before I run the script. 1: gzip -9c command is not apart of the java command to run trimmomatic on my script. 2: the gzip is going to write the s1_se and s2_se of every file to the orphans.fq.gz (I think). Some weird stuff may happen with the orphans.fq.gz file will have to check after it is done.
+```
+sbatch -p high -t 24:00:00 trimmmomatic.sh
+```
+
+Will return tomorrow to see results! fingers crossed it works.
+
+
+
+
+
+
+
+
 
 
