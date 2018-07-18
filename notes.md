@@ -396,6 +396,43 @@ Now it works! Please disregard past messages.
 All the .fastq.gz files are in the correct directory. Next step is to run fastqc analysis.
 
 
+7/18/18
+
+# Running Fastqc
+My current fastqc version is v0.11.5
+
+The basic fastqc command looks like
+`fastqc (-o output directory) (name of sequence file)`
+
+So I think this command should work
+`fastqc -o ~/projects/mangrove_killifish_project/raw_data/fastqc/ ~/projects/mangrove_killifish_project/raw_data/fastq/*.fastq.gz`
+
+Command worked but it will probably take a while so I will just write a script to run in background.
+```
+fastqc.sh
+```
+```
+#!/bin/bash -l
+#SBATCH -J fastqc
+#SBATCH -o /home/prvasque/slurm-log/fastqc-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/fastqc-stderr-%j.txt
+#SBATCH --mem=6000
+#SBATCH -c 2
+#SBATCH -t 6:00:00
+
+module load fastqc
+
+DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data
+
+fastqc -o $DIR/fastqc/ $DIR/fastq/SRR69$SLURM_ARRAY_TASK_ID*.fastq.gz
+```
+So I should be able to run this command with 
+```
+sbatch --array=25941-26018 fastqc.sh
+```
+Okay it's running, will return later to see results.
+`Submitted batch job 23706861`
+
 
 
 
