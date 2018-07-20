@@ -473,43 +473,9 @@ java.io.FileNotFoundException: /home/prvasque/projects/mangrove_killifish_projec
 Okay I misspelled adapters oops. Rerunning with adapters correctly spelled.
 
 Seems like it will work, Ill write up a script now to have it run overnight.
-```
-trimmomatic.sh
-```
-```
-#!/bin/bash -l
-#SBATCH -c 24
-#SBATCH --mem=16000
-#SBATCH -J trimmomatic
-#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
-#SBATCH -o /home/prvasque/slurm-log/trimmomatic_stdout-%j.txt
-#SBATCH -e /home/prvasque/slurm-log/trimmomatic_stderr-%j.txt
 
-module load trimmomatic
+#### Moved script below
 
-DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
-outdir=/home/prvasque/projects/mangrove_killifish_project/trim/data/
-
-cd $DIR
-
-for filename in *_1.fastq.gz
-do
- base=$(basename $filename .fastq.gz)
- echo $base
- 
- base2=${base/_1/_2}
- echo $base2
- 
- java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE ${base}.fastq.gz ${base2}.fastq.gz \
- $outdir/${base}.qc.fq.gz $outdir/s1_se \
- $outdir/${base2}.qc.fq.gz $outdir/s2_se \
- ILLUMINACLIP:/home/prvasque/projects/mangrove_killifish_project/trim/adaptors/NEBnextAdapt.fa:2:40:15 \
- LEADING:2 TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
- 
- gzip -9c $outdir/s1_se $outdir/s2_se >> $outdir/orphans.fq.gz
- rm -f $outdir/s1_se $outdir/s2_se
-done
-```
 Some weird things I notice before I run the script. 1: gzip -9c command is not apart of the java command to run trimmomatic on my script. 2: the gzip is going to write the s1_se and s2_se of every file to the orphans.fq.gz (I think). Some weird stuff may happen with the orphans.fq.gz file will have to check after it is done.
 ```
 sbatch -p high -t 24:00:00 trimmmomatic.sh
@@ -518,10 +484,47 @@ sbatch -p high -t 24:00:00 trimmmomatic.sh
 Will return tomorrow to see results! fingers crossed it works.
 
 
+7/19/18
 
+# Trimmomatic
 
+Trimmomatic was still running when I returned. Each file was taking ~1 hour to complete. So I canceled the job and will rewrite the script so it uses an array so they will all run at once and make the process quicker.
 
+Some good info from Elias: Because trimmomatic is already loaded on farm cluster, I don't need to say `module load trimmomatic`
+Also after the $SLURM_ARRAY stuff use a backslash (\\) so the \_1 and \_2 are not apart of the $SLURM_ARRAY
+NOTE: removed the --array flag from script because I was getting an error message. JUST KIDDING slurm doesnt support arrays over a certain size so I can just reduce the size of my array from 6925941-6926018
+```
+trimmomatic.sh
+```
+```
+#!/bin/bash -l
+#SBATCH -c 6
+#SBATCH --mem=16000
+#SBATCH -J trimmomatic
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+#SBATCH -o /home/prvasque/slurm-log/trimmomatic_stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/trimmomatic_stderr-%j.txt
+#SBATCH --array=25941-26018
+#SBATCH --time=12:00:00
+#SBATCH -p med
 
+DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+outdir=/home/prvasque/projects/mangrove_killifish_project/trim/data/
+
+cd $DIR
+
+java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE SRR69$SLURM_ARRAY_TASK_ID\_1.fastq.gz \
+        SRR69$SLURM_ARRAY_TASK_ID\_2.fastq.gz $outdir/SRR69$SLURM_ARRAY_TASK_ID\_1.qc.fq.gz \
+        $outdir/orphans/69$SLURM_ARRAY_TASK_ID\_1_se $outdir/SRR69$SLURM_ARRAY_TASK_ID\_2.qc.fq.gz \
+        $outdir/orphans/69$SLURM_ARRAY_TASK_ID\_2_se \
+        ILLUMINACLIP:/home/prvasque/projects/mangrove_killifish_project/trim/adapters/NEBnextAdapt.fa:2:40:15 \
+        LEADING:2 TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
+```
+To test that this works I will run
+```
+sbatch trimmomatic.sh
+```
+All jobs were submitted!
 
 
 
