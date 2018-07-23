@@ -526,6 +526,76 @@ sbatch trimmomatic.sh
 ```
 All jobs were submitted!
 
+7/23/18
+
+All my trimmomatic jobs completed. Next step is to export the trim results to a table. I do not know what the purpose of this is except for looking at data afterwards. All the trimmomatic output files have the extension .qc.fq.gz is that the same as .qc.fastq.gz?
+
+I think I will skip the export trim results step until I am in need of a result table. So the next step is to download the reference genome from NCBI
+
+# Downloading reference genome from NCBI
+Downloaded the gff and fna files from NCBI for Kryptolebias Marmoratus
+```
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_marmoratus/latest_assembly_versions/GCF_001649575.1_ASM164957v1/GCF_001649575.1_ASM164957v1_genomic.gff.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_marmoratus/latest_assembly_versions/GCF_001649575.1_ASM164957v1/GCF_001649575.1_ASM164957v1_genomic.fna.gz
+```
+.fna file is a FastA format file containing Nucleotide sequence (DNA)
+.gff file is a general feature format containing genomic regions, the "genes, transcripts, etc"
+Got these two descriptions from a biostars forum.
+
+
+# Mapping reads to reference genome using STAR
+First step is to index the reference genome with the latest gff file.
+We will use the program STAR. STAR maps large sets of high-throughput sequencing reads to a reference genome for RNA transcripts.
+NOTE: REMEMBER TO GUNZIP THE FILES THAT WERE DOWNLOADED
+While in directory of the files I downloaded I ran
+```
+gunzip *.gz
+```
+This unzipped the files to prepare them for STAR indexing
+
+
+SCript for STAR indexing
+```
+starindex_korea_latest.sh
+```
+```
+#!/bin/bash -l
+#SBATCH --mem=40000
+#SBATCH --cpus-per-task=24
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/scripts/
+#SBATCH -o /home/prvasque/slurm-log/starindex/starindex-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/starindex/starindex-stderr-%j.txt
+#SBATCH -J starindex_korea_latest
+#SBATCH -t 6:00:00
+
+module load perlnew/5.18.4
+module load star/2.4.2a
+
+DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome/
+
+cd $DIR
+
+STAR --runMode genomeGenerate --genomeDIR $DIR --genomeFastaFiles GCF_001649575.1_ASM164957v1_genomic.fna \
+--sjdbGTFtagExonParentTranscript Parent --sjdbGTFfile GCF_001649575.1_ASM164957v1_genomic.gff \
+--sjdbOverhang 99
+
+echo "genome indexed"
+```
+Ran on farm cluster with 
+```
+sbatch -p med starindex_korea_latest.sh
+```
+
+
+A lot of scripts are in the processes of running on the farm cluster so my script is low in the que. RIP.
+
+
+
+
+
+
+
+
 
 
 
