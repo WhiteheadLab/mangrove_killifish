@@ -590,11 +590,89 @@ sbatch -p med starindex_korea_latest.sh
 A lot of scripts are in the processes of running on the farm cluster so my script is low in the que. RIP.
 
 
+7/24/18
+Output of star indexing
+```
+Jul 23 16:48:38 ..... Started STAR run
+Jul 23 16:48:38 ... Starting to generate Genome files
+Jul 23 16:49:04 ... starting to sort  Suffix Array. This may take a long time...
+Jul 23 16:49:11 ... sorting Suffix Array chunks and saving them to disk...
+Jul 23 17:05:22 ... loading chunks from disk, packing SA...
+Jul 23 17:06:15 ... Finished generating suffix array
+Jul 23 17:06:15 ... starting to generate Suffix Array index...
+Jul 23 17:09:56 ..... Processing annotations GTF
+Jul 23 17:10:08 ..... Inserting junctions into the genome indices
+Jul 23 17:17:12 ... writing Genome to disk ...
+Jul 23 17:17:17 ... writing Suffix Array to disk ...
+Jul 23 17:17:37 ... writing SAindex to disk
+Jul 23 17:17:42 ..... Finished successfully
+genome indexed
+```
+And no errors
 
+# Aligning sequences with the korea genome
 
+```
+staralignment_latest_korea.sh
+```
+```
+#!/bin/bash -l
+#SBATCH --cpus-per-task=24
+#SBATCH --mem=40000
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/scripts/
+#SBATCH -o /home/prvasque/slurm-log/staralignment/stargenoalign-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/staralignment/stargenoalign-stderr-%j.txt
+#SBATCH -J staralignment_last_korea
+#SBATCH -a 25941-26018
+#SBATCH -t 6:00:00
+#SBATCH -p med
 
+module load perlnew/5.18.4
+module load star/2.4.2a
 
+outdir=/home/prvasque/projects/mangrove_killifish_project/alignment
+dir=/home/prvasque/projects/mangrove_killifish_project/trim/data
 
+STAR --genomeDir /home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome/ \
+ --runThreadN 24 --readFilesCommand zcat --sjdbInsertSave all \
+ --readFilesIn ${dir}/SRR69${SLURM_ARRAY_TASK_ID}_1.qc.fq.gz ${dir}/SRR69${SLURM_ARRAY_TASK_ID}_2.qc.fq.gz \
+ --outFileNamePrefix ${outdir}/SRR69${SLURM_ARRAY_TASK_ID}
+```
+
+Here is an example of one of the mapping outputs.
+```                                 
+                                 Started job on |	Jul 24 14:58:38
+                             Started mapping on |	Jul 24 14:59:05
+                                    Finished on |	Jul 24 15:07:05
+       Mapping speed, Million of reads per hour |	170.04
+
+                          Number of input reads |	22671582
+                      Average input read length |	299
+                                    UNIQUE READS:
+                   Uniquely mapped reads number |	20337417
+                        Uniquely mapped reads % |	89.70%
+                          Average mapped length |	296.32
+                       Number of splices: Total |	24269462
+            Number of splices: Annotated (sjdb) |	23935108
+                       Number of splices: GT/AG |	24083108
+                       Number of splices: GC/AG |	130051
+                       Number of splices: AT/AC |	8742
+               Number of splices: Non-canonical |	47561
+                      Mismatch rate per base, % |	0.40%
+                         Deletion rate per base |	0.01%
+                        Deletion average length |	1.81
+                        Insertion rate per base |	0.01%
+                       Insertion average length |	2.13
+                             MULTI-MAPPING READS:
+        Number of reads mapped to multiple loci |	526138
+             % of reads mapped to multiple loci |	2.32%
+        Number of reads mapped to too many loci |	12457
+             % of reads mapped to too many loci |	0.05%
+                                  UNMAPPED READS:
+       % of reads unmapped: too many mismatches |	0.00%
+                 % of reads unmapped: too short |	7.78%
+                     % of reads unmapped: other |	0.14%
+```
 
 
 
