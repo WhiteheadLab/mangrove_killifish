@@ -674,6 +674,20 @@ Here is an example of one of the mapping outputs.
                      % of reads unmapped: other |	0.14%
 ```
 
+In yunwei's pipeline he ran his sequecing data in four different lines. This caused there to be 4 different outputs of all the 78 runs(one for each lane). So, in his pipeline he includes a step where he has to combine the four different bam files into one.
+This leaves me with the question, are the files I am working with just one of the lanes?? What data was published to NCBI? A mix of all four lanes or is it just one of the lanes? I assume that for my code I do not combine all the different lanes because either: A. they are already combined! or B. I only have one of the lanes!
+Yunwei also includes a step during this process where he defines real group IDs. But what is a real group ID? I think it has to do with the treatments for the different samples which will help with downfield analysis. (BC all my samples are labeled as SRR69(somethingsomethingsomething)).
+This will be tomorrows task of figureing out how to correctly label the samples as well as go from SAM to BAM files.
+
+
+
+
+
+
+
+
+
+
 
 
 
