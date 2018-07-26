@@ -679,8 +679,52 @@ This leaves me with the question, are the files I am working with just one of th
 Yunwei also includes a step during this process where he defines real group IDs. But what is a real group ID? I think it has to do with the treatments for the different samples which will help with downfield analysis. (BC all my samples are labeled as SRR69(somethingsomethingsomething)).
 This will be tomorrows task of figureing out how to correctly label the samples as well as go from SAM to BAM files.
 
+7/25/18
+
+Okay so what even are real group IDs. It seems like they are a way to differentiate between samples. But it also seems like yunwei only had to use them because he had multiple lanes and it helped for when he combined all the bam files. SO DO I NEED REAL ID???? Only because I had only one lane, hmmm seems like a good question for dibsi people.
+So after much googling, research, and asking Lisa, I have decided that the read group IDs are _drumroll_ *NOT IMPORTANT*! (I hope)
+So this means that the only thing I need to do to the .sam files is to convert them to .bam files. Yunwei also did renaming in this step, however, I think I will save that for the end before I run analysis between the two treatment conditons as I cannot match his naming scheme to mine, But I can match the SRR numbers to the data provided on NCBI. I think this will just come at the end.
+
+# .sam to .bam using samtools
+```
+sam_to_bam.sh
+```
+```
+#!/bin/bash -l
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/alignment/
+#SBATCH --mem=16000
+#SBATCH -o /home/prvasque/slurm-log/samtools/sambam-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/samtools/sambam-stderr-%j.txt
+#SBATCH -J sam_to_bam
+#SBATCH -p high
+#SBATCH -t 12:00:00
+#SBATCH -a 25941-26018
+
+#sam files to bam files
+module load samtools
+
+DIR=/home/prvasque/projects/mangrove_killifish_project/alignment
+cd ${DIR}
+
+samtools view -bS -u SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam | \
+ samtools sort --output-fmt BAM -o SRR69${SLURM_ARRAY_TASK_ID}.bam
+```
+
+Ran with 
+```
+sbatch sam_to_bam.sh
+```
 
 
+
+# HTSeq-Count
+
+HTSeq-Count is a script that is apart of HTseq.
+
+"The script htseq-count is a tool for RNA-Seq data analysis: Given a SAM/BAM file and a GTF or GFF file with gene models, it counts for each gene how many aligned reads overlap its exons. These counts can then be used for gene-level differential expression analyses using methods such as DESeq2 ( Love et al. , 2014 ) or edgeR ( Robinson et al. , 2010 ). As the script is designed specifically for differential expression analysis, only reads mapping unambiguously to a single gene are counted, whereas reads aligned to multiple positions or overlapping with more than one gene are discarded."
+Taken from HTSeq documentation. (https://academic.oup.com/bioinformatics/article/31/2/166/2366196)
+
+So basically I will use HTSeq count to quantify the amount of reads there are in my .bam(or .sam) files for differential expression analysis. One important thing is that if a read equally maps to two different genes it will be discarded.
 
 
 
