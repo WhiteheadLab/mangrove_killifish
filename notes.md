@@ -715,7 +715,17 @@ Ran with
 sbatch sam_to_bam.sh
 ```
 
+7/27/18
 
+Got an email from the IT support saying my jobs are very I/O intensive and I should start running everything in a /scratch/ as well as using srun within my script before my commands. I emailed back saying I don't really understand any of that so more information would be nice.
+Oh and I found out they canceled by jobs... rip.
+How tragic, once they respond I will have to rerun the samtools job. For now I will remove all the temp files that I have and my slurm logs.
+```
+rm *.bam
+```
+did this in my allignments folder. I should probabbly make a new directory for all my .bam files to keep everyting all organized.
+
+Will do research on next part of pipeline while I wait for support.
 
 # HTSeq-Count
 
