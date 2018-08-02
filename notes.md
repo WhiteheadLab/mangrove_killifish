@@ -727,6 +727,56 @@ did this in my allignments folder. I should probabbly make a new directory for a
 
 Will do research on next part of pipeline while I wait for support.
 
+8/2/18
+Support never emailed back. I am going to write the script up to do all the reading/writing stuff in scratch and srun before my command
+
+# Sam to bam updated
+```
+sam_to_bam.sh
+```
+```
+#!/bin/bash -l
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/alignment/
+#SBATCH --mem=16000
+#SBATCH -o /home/prvasque/slurm-log/samtools/sambam-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/samtools/sambam-stderr-%j.txt
+#SBATCH -J sam_to_bam
+#SBATCH -p high
+#SBATCH -t 12:00:00
+#SBATCH -a 25941-26018
+
+#sam files to bam files
+module load samtools
+
+DIR=/scratch/prvasque/$SLURM_JOBID
+mkdir -p $DIR/
+
+cp /home/prvasque/projects/mangrove_killifish_project/alignment/SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam \
+$DIR/SRR69${SLURM_ARRAY_TASK_ID}.Aligned.out.sam
+
+
+srun samtools view -bS -u $DIR/SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam | \
+ samtools sort --output-fmt BAM -o $DIR/SRR69${SLURM_ARRAY_TASK_ID}.bam
+ 
+cp $DIR/SRR69${SLURM_ARRAY_TASK_ID}.bam /home/prvasque/projects/mangrove_killifish_project/alignment/SRR69${SLURM_ARRAY_TASK_ID}.bam 
+ 
+rm -rf /scratch/prvasque/$SLURM_JOBID/
+```
+1. Added srun infront of the samtools command
+2. Did changed DIR to /scratch/prvasque/@SLURM_JOBID
+3. Added an echo statement to better understand what files were transfered to the directory on my account
+
+After running initally I got this error 
+```
+mkdir: cannot create directory ‘/scratch/prvasque/24502859’: No space left on device
+cp: error writing '/scratch/prvasque/24502859': No space left on device
+```
+I am unable to find out why this is happening. But I assume it has something to do with there already being a /scratch/prvasque/${something} directory. My best bet would be to run a command that clears out all the scratches that ive worked with. Something like
+```
+for i inscontrol show hostname c8-[62-64,67-77,87-89,91-96] ; do echo $i; ssh $i rm -rf /scratch/prvasque/*;done
+```
+But I don't want to run this blindly because knowing my luck ill delete everything on the farm cluster and get yelled at. lol jk.
+
 # HTSeq-Count
 
 HTSeq-Count is a script that is apart of HTseq.
@@ -738,7 +788,14 @@ So basically I will use HTSeq count to quantify the amount of reads there are in
 
 
 
+# Limma
 
+For the limma script the first step deals with a design matrix. What is a design matrix???
+ 
+### Design Matrix
+So a design matrix looks like a system of linear equations (i guess that actually makes sense because all the analysis has to deal with linear problems). Down the Y axis is all the different files, and down the X axis  is the possible treatments. For yunweis data he has a control group and a experiment group. Both the control and experiment have times within them. So... Do I make each time its own X colum?
+
+I emailed yunwei and asked for the design.matrix files. Hopefully he still has them, if not this may get messy.
 
 
 
