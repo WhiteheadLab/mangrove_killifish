@@ -743,13 +743,15 @@ sam_to_bam.sh
 #SBATCH -J sam_to_bam
 #SBATCH -p high
 #SBATCH -t 12:00:00
-#SBATCH -a 25941-26018
+#SBATCH -a 25941-26018%6
 
 #sam files to bam files
 module load samtools
 
 DIR=/scratch/prvasque/$SLURM_JOBID
 mkdir -p $DIR/
+
+echo 'hostname'
 
 cp /home/prvasque/projects/mangrove_killifish_project/alignment/SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam \
 $DIR/SRR69${SLURM_ARRAY_TASK_ID}.Aligned.out.sam
@@ -775,7 +777,17 @@ I am unable to find out why this is happening. But I assume it has something to 
 ```
 for i inscontrol show hostname c8-[62-64,67-77,87-89,91-96] ; do echo $i; ssh $i rm -rf /scratch/prvasque/*;done
 ```
-But I don't want to run this blindly because knowing my luck ill delete everything on the farm cluster and get yelled at. lol jk.
+But I don't want to run this blindly because knowing my luck I'll delete everything on the farm cluster.
+
+8/6/18
+Still need to run my sam_to_bam command. But first, check if my .sra files are equilvilent to the added up raw files that yunwei had.
+
+for i in `scontrol show hostname c8-[62-64,67-77,87-89,91-96]` ; do echo 
+$i; "ssh $i rm -rf /scratch/tlknight"; done
+
+updated way to clear out the scratch directories!
+
+
 
 # HTSeq-Count
 
