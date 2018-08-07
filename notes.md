@@ -783,9 +783,57 @@ But I don't want to run this blindly because knowing my luck I'll delete everyth
 Still need to run my sam_to_bam command. But first, check if my .sra files are equilvilent to the added up raw files that yunwei had.
 
 for i in `scontrol show hostname c8-[62-64,67-77,87-89,91-96]` ; do echo 
-$i; "ssh $i rm -rf /scratch/tlknight"; done
+$i; "ssh $i rm -rf /scratch/prvasque"; done
+
+for i in `scontrol show hostname c9-[68]` ; do echo 
+$i; "ssh $i rm -rf /scratch/prvasque"; done
 
 updated way to clear out the scratch directories!
+
+Reran sam to bam
+
+8/7/18
+
+Sam to bam went through and in my allignments folder I have all of my .bam files! Nice
+Ran a quick samtools flagstat on the first one and got
+```
+prvasque@c10-97:~/projects/mangrove_killifish_project/alignment$ samtools flagstat SRR6925941.bam
+43444110 + 0 in total (QC-passed reads + QC-failed reads)
+1717445 + 0 secondary
+0 + 0 supplementary
+0 + 0 duplicates
+43444110 + 0 mapped (100.00% : N/A)
+41726665 + 0 paired in sequencing
+20863546 + 0 read1
+20863119 + 0 read2
+41726220 + 0 properly paired (100.00% : N/A)
+41726220 + 0 with itself and mate mapped
+445 + 0 singletons (0.00% : N/A)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+```
+This looks similar to one of yunwei's results
+```
+ywdong@c9-51:~/Data/alignments/merge$ samtools flagstat 234.bam
+26850936 + 0 in total (QC-passed reads + QC-failed reads)
+231122 + 0 secondary
+0 + 0 supplementary
+0 + 0 duplicates
+26850936 + 0 mapped (100.00% : N/A)
+26619814 + 0 paired in sequencing
+13309960 + 0 read1
+13309854 + 0 read2
+26619704 + 0 properly paired (100.00% : N/A)
+26619704 + 0 with itself and mate mapped
+110 + 0 singletons (0.00% : N/A)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+```
+Looks Good!!!
+Im going to find which one 234.bam is and maybe try and run that one.
+The sample 234 is one of 5 different SRA#. Strain - HON11 Time- 72hrs Control
+This corrresponds to either SRR6925977, SRR6925957, SRR6925974, SRR6925959, SRR6925958.
+SRR6925977
 
 
 
