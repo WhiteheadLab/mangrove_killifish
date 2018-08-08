@@ -847,6 +847,76 @@ Taken from HTSeq documentation. (https://academic.oup.com/bioinformatics/article
 So basically I will use HTSeq count to quantify the amount of reads there are in my .bam(or .sam) files for differential expression analysis. One important thing is that if a read equally maps to two different genes it will be discarded.
 
 
+prvasque@c10-93:/home/ywdong/Data/alignments/merge$ samtools flagstat 519.bam
+30732851 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
+30732851 + 0 mapped (100.00%:-nan%)
+30732851 + 0 paired in sequencing
+15366543 + 0 read1
+15366308 + 0 read2
+30732608 + 0 properly paired (100.00%:-nan%)
+30732608 + 0 with itself and mate mapped
+243 + 0 singletons (0.00%:-nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+prvasque@c10-93:/home/ywdong/Data/alignments/merge$ samtools flagstat 524.bam                                                 25796254 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
+25796254 + 0 mapped (100.00%:-nan%)
+25796254 + 0 paired in sequencing
+12898257 + 0 read1
+12897997 + 0 read2
+25795986 + 0 properly paired (100.00%:-nan%)
+25795986 + 0 with itself and mate mapped
+268 + 0 singletons (0.00%:-nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+prvasque@c10-93:/home/ywdong/Data/alignments/merge$ samtools flagstat 529.bam
+29661927 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
+29661927 + 0 mapped (100.00%:-nan%)
+29661927 + 0 paired in sequencing
+14831084 + 0 read1
+14830843 + 0 read2
+29661676 + 0 properly paired (100.00%:-nan%)
+29661676 + 0 with itself and mate mapped
+251 + 0 singletons (0.00%:-nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+prvasque@c10-93:/home/ywdong/Data/alignments/merge$ samtools flagstat 534.bam
+27915079 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
+27915079 + 0 mapped (100.00%:-nan%)
+27915079 + 0 paired in sequencing
+13957675 + 0 read1
+13957404 + 0 read2
+27914802 + 0 properly paired (100.00%:-nan%)
+27914802 + 0 with itself and mate mapped
+277 + 0 singletons (0.00%:-nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+prvasque@c10-93:~/projects/mangrove_killifish_project/alignment/bam$ samtools flagstat SRR6925941.bam 
+43444110 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
+43444110 + 0 mapped (100.00%:-nan%)
+43444110 + 0 paired in sequencing
+21722276 + 0 read1
+21721834 + 0 read2
+43443650 + 0 properly paired (100.00%:-nan%)
+43443650 + 0 with itself and mate mapped
+460 + 0 singletons (0.00%:-nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+
+
+
+
+
+
 
 # Limma
 
