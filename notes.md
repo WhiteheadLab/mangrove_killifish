@@ -837,15 +837,6 @@ SRR6925977
 
 
 
-# HTSeq-Count
-
-HTSeq-Count is a script that is apart of HTseq.
-
-"The script htseq-count is a tool for RNA-Seq data analysis: Given a SAM/BAM file and a GTF or GFF file with gene models, it counts for each gene how many aligned reads overlap its exons. These counts can then be used for gene-level differential expression analyses using methods such as DESeq2 ( Love et al. , 2014 ) or edgeR ( Robinson et al. , 2010 ). As the script is designed specifically for differential expression analysis, only reads mapping unambiguously to a single gene are counted, whereas reads aligned to multiple positions or overlapping with more than one gene are discarded."
-Taken from HTSeq documentation. (https://academic.oup.com/bioinformatics/article/31/2/166/2366196)
-
-So basically I will use HTSeq count to quantify the amount of reads there are in my .bam(or .sam) files for differential expression analysis. One important thing is that if a read equally maps to two different genes it will be discarded.
-
 
 prvasque@c10-93:/home/ywdong/Data/alignments/merge$ samtools flagstat 519.bam
 30732851 + 0 in total (QC-passed reads + QC-failed reads)
@@ -912,8 +903,59 @@ prvasque@c10-93:~/projects/mangrove_killifish_project/alignment/bam$ samtools fl
 0 + 0 with mate mapped to a different chr (mapQ>=5)
 
 
+# Samtools sort
+
+How to use
+```
+samtools sort [options] in.bam
+```
+Possible options
+
+-n sort my read names
+-o [file] output file
+
+```
+samsort.sh
+```
+```
+#!/bin/bash -l
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/alignment/bam/
+#SBATCH --mem=16000
+#SBATCH -o /home/prvasque/slurm-log/samtools/samsort-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/samtools/samsort-stderr-%j.txt
+#SBATCH -J samsort
+#SBATCH -p high
+#SBATCH -t 12:00:00
+#SBATCH -a 25941-26018%8
+
+#samtools sort
+
+DIR=/home/prvasque/projects/mangrove_killifish_project/alignment
+
+cd $DIR
+
+echo SRR69${SLURM_ARRAY_TASK_ID}
+
+samtools sort -n -o $DIR/sorted/SRR69${SLURM_ARRAY_TASK_ID}_sorted.bam \
+	$DIR/bam/SRR69${SLURM_ARRAY_TASK_ID}.bam
+
+echo 'done!'
+```
 
 
+# HTSeq-Count
+
+HTSeq-Count is a script that is apart of HTseq.
+
+"The script htseq-count is a tool for RNA-Seq data analysis: Given a SAM/BAM file and a GTF or GFF file with gene models, it counts for each gene how many aligned reads overlap its exons. These counts can then be used for gene-level differential expression analyses using methods such as DESeq2 ( Love et al. , 2014 ) or edgeR ( Robinson et al. , 2010 ). As the script is designed specifically for differential expression analysis, only reads mapping unambiguously to a single gene are counted, whereas reads aligned to multiple positions or overlapping with more than one gene are discarded."
+Taken from HTSeq documentation. (https://academic.oup.com/bioinformatics/article/31/2/166/2366196)
+
+So basically I will use HTSeq count to quantify the amount of reads there are in my .bam(or .sam) files for differential expression analysis. One important thing is that if a read equally maps to two different genes it will be discarded.
+
+path for .gff file
+```
+/home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome/GCF_001649575.1_ASM164957v1_genomic.gff
+```
 
 
 
