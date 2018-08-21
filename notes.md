@@ -971,6 +971,201 @@ I emailed yunwei and asked for the design.matrix files. Hopefully he still has t
 
 
 
+-rw-rw-r--   1 ywdong ywdong 293M Jan 18  2017 524_S60_L001_R1_001.qc.fq.gz
+-rw-rw-r--   1 ywdong ywdong 280M Jan 18  2017 524_S61_L002_R1_001.qc.fq.gz
+-rw-rw-r--   1 ywdong ywdong 285M Jan 18  2017 524_S61_L003_R1_001.qc.fq.gz
+-rw-rw-r--   1 ywdong ywdong 288M Jan 18  2017 524_S61_L004_R1_001.qc.fq.gz
+-rw-rw-r--   1 ywdong ywdong 259M Nov 16  2016 9_S8_L001_R1_001.qc.fq.gz
+-rw-rw-r--   1 ywdong ywdong 315M Nov 16  2016 9_S8_L001_R2_001.qc.fq.gz
 
 
+prvasque@c9-75:~/projects/mangrove_killifish_project/alignment/bam$ samtools flagstat SRR6926017.bam 
+26916048 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
+26916048 + 0 mapped (100.00%:-nan%)
+26916048 + 0 paired in sequencing
+13458080 + 0 read1
+13457968 + 0 read2
+26915936 + 0 properly paired (100.00%:-nan%)
+26915936 + 0 with itself and mate mapped
+112 + 0 singletons (0.00%:-nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+
+prvasque@c9-75:/home/ywdong/Data/alignments/merge$ samtools flagstat 009.bam
+24312735 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
+24312735 + 0 mapped (100.00%:-nan%)
+24312735 + 0 paired in sequencing
+12156425 + 0 read1
+12156310 + 0 read2
+24312620 + 0 properly paired (100.00%:-nan%)
+24312620 + 0 with itself and mate mapped
+115 + 0 singletons (0.00%:-nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+
+
+-rw-rw-r--   1 ywdong ywdong 2.5G Dec  8  2016 369.bam
+-rw-rw-r--   1 ywdong ywdong 2.3G Dec  9  2016 Undetermined.bam
+-rw-rw-r--   1 ywdong ywdong 2.1G Dec  9  2016 624.bam
+-rw-rw-r--   1 ywdong ywdong 2.1G Dec  9  2016 649.bam
+-rw-rw-r--   1 ywdong ywdong 2.1G Dec  8  2016 619.bam
+-rw-rw-r--   1 ywdong ywdong 2.0G Dec  8  2016 514.bam
+-rw-rw-r--   1 ywdong ywdong 2.0G Dec  8  2016 004.bam
+-rw-rw-r--   1 ywdong ywdong 1.9G Dec  9  2016 859.bam
+-rw-rw-r--   1 ywdong ywdong 1.9G Dec  9  2016 819.bam
+-rw-rw-r--   1 ywdong ywdong 1.9G Dec  9  2016 809.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  9  2016 964.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  8  2016 509.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  9  2016 849.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  9  2016 784.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  9  2016 929.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  9  2016 879.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  8  2016 319.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  8  2016 334.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  9  2016 639.bam
+-rw-rw-r--   1 ywdong ywdong 1.8G Dec  9  2016 919.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 519.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  9  2016 934.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  9  2016 684.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 579.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  9  2016 914.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 589.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 324.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 499.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 529.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 464.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 614.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  9  2016 704.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 569.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 329.bam
+-rw-rw-r--   1 ywdong ywdong 1.7G Dec  8  2016 559.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  9  2016 644.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 339.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 599.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 309.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 269.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  9  2016 739.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 594.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 469.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 489.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 534.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 314.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 584.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  9  2016 804.bam
+-rw-rw-r--   1 ywdong ywdong 1.6G Dec  8  2016 604.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 364.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 234.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 304.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 479.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 474.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 149.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 504.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 524.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 139.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 214.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  9  2016 874.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 239.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 494.bam
+-rw-rw-r--   1 ywdong ywdong 1.5G Dec  8  2016 574.bam
+-rw-rw-r--   1 ywdong ywdong 1.4G Dec  8  2016 484.bam
+-rw-rw-r--   1 ywdong ywdong 1.4G Dec  8  2016 564.bam
+-rw-rw-r--   1 ywdong ywdong 1.4G Dec  8  2016 609.bam
+-rw-rw-r--   1 ywdong ywdong 1.4G Dec  8  2016 144.bam
+-rw-rw-r--   1 ywdong ywdong 1.4G Dec  8  2016 009.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  8  2016 019.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  9  2016 959.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  8  2016 374.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  8  2016 224.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  9  2016 719.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  8  2016 279.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  8  2016 264.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  8  2016 229.bam
+-rw-rw-r--   1 ywdong ywdong 1.3G Dec  8  2016 014.bam
+-rw-rw-r--   1 ywdong ywdong 1.1G Dec  8  2016 134.bam
+-rw-rw-r--   1 ywdong ywdong 1.1G Dec  9  2016 634.bam
+-rw-rw-r--   1 ywdong ywdong 868M Dec  8  2016 274.bam
+-rw-rw-r--   1 ywdong ywdong 781M Dec  9  2016 629.bam
+
+-rw-rw-r--  1 prvasque prvasque 2.5G Aug  8 16:07t SRR6925993.bam
+-rw-rw-r--  1 prvasque prvasque 2.1G Aug  8 13:38 SRR6925941.bam
+-rw-rw-r--  1 prvasque prvasque 2.1G Aug  8 13:35 SRR6925946.bam
+-rw-rw-r--  1 prvasque prvasque 2.1G Aug  8 13:35 SRR6925944.bam
+-rw-rw-r--  1 prvasque prvasque 2.0G Aug  8 14:55 SRR6925970.bam
+-rw-rw-r--  1 prvasque prvasque 2.0G Aug  8 17:07 SRR6926016.bam
+-rw-rw-r--  1 prvasque prvasque 1.9G Aug  8 16:15 SRR6925996.bam
+-rw-rw-r--  1 prvasque prvasque 1.9G Aug  8 13:34 SRR6925943.bam
+-rw-rw-r--  1 prvasque prvasque 1.9G Aug  8 14:54 SRR6925971.bam
+-rw-rw-r--  1 prvasque prvasque 1.9G Aug  8 16:47 SRR6926009.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 16:28 SRR6926003.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 15:15 SRR6925976.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 13:33 SRR6925942.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 14:28 SRR6925963.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 15:21 SRR6925980.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 14:08 SRR6925954.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 14:05 SRR6925953.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 15:54 SRR6925990.bam
+-rw-rw-r--  1 prvasque prvasque 1.8G Aug  8 14:28 SRR6925962.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 14:58 SRR6925973.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 15:34 SRR6925985.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 15:42 SRR6925988.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 14:00 SRR6925952.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 17:02 SRR6926015.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 16:36 SRR6926006.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 14:39 SRR6925967.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 14:16 SRR6925958.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 16:58 SRR6926014.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 15:33 SRR6925983.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 15:39 SRR6925987.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 16:24 SRR6926001.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 16:50 SRR6926011.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 13:48 SRR6925947.bam
+-rw-rw-r--  1 prvasque prvasque 1.7G Aug  8 16:17 SRR6926000.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 14:07 SRR6925955.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 13:31 SRR6925945.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 14:45 SRR6925968.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 15:52 SRR6925991.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 13:50 SRR6925948.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 14:36 SRR6925966.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 14:53 SRR6925972.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 16:27 SRR6926004.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 16:38 SRR6926007.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 15:24 SRR6925982.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 15:45 SRR6925989.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 15:03 SRR6925975.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 14:45 SRR6925969.bam
+-rw-rw-r--  1 prvasque prvasque 1.6G Aug  8 16:53 SRR6926012.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 15:52 SRR6925992.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 14:32 SRR6925964.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 14:34 SRR6925965.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 15:01 SRR6925974.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 15:19 SRR6925981.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 15:35 SRR6925986.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 15:14 SRR6925979.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 14:08 SRR6925956.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 16:20 SRR6926002.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 16:30 SRR6926005.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 15:58 SRR6925994.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 14:19 SRR6925959.bam
+-rw-rw-r--  1 prvasque prvasque 1.5G Aug  8 15:13 SRR6925978.bam
+-rw-rw-r--  1 prvasque prvasque 1.4G Aug  8 16:43 SRR6926010.bam
+-rw-rw-r--  1 prvasque prvasque 1.4G Aug  8 16:53 SRR6926013.bam
+-rw-rw-r--  1 prvasque prvasque 1.4G Aug  8 15:59 SRR6925995.bam
+-rw-rw-r--  1 prvasque prvasque 1.4G Aug  8 17:04 SRR6926017.bam
+-rw-rw-r--  1 prvasque prvasque 1.4G Aug  8 14:21 SRR6925961.bam
+-rw-rw-r--  1 prvasque prvasque 1.3G Aug  8 13:50 SRR6925950.bam
+-rw-rw-r--  1 prvasque prvasque 1.3G Aug  8 14:18 SRR6925960.bam
+-rw-rw-r--  1 prvasque prvasque 1.3G Aug  8 15:08 SRR6925977.bam
+-rw-rw-r--  1 prvasque prvasque 1.3G Aug  8 16:38 SRR6926008.bam
+-rw-rw-r--  1 prvasque prvasque 1.3G Aug  8 15:28 SRR6925984.bam
+-rw-rw-r--  1 prvasque prvasque 1.3G Aug  8 13:48 SRR6925949.bam
+-rw-rw-r--  1 prvasque prvasque 1.3G Aug  8 14:03 SRR6925957.bam
+-rw-rw-r--  1 prvasque prvasque 1.3G Aug  8 17:07 SRR6926018.bam
+-rw-rw-r--  1 prvasque prvasque 1.1G Aug  8 16:04 SRR6925997.bam
+-rw-rw-r--  1 prvasque prvasque 1.1G Aug  8 16:09 SRR6925999.bam
+-rw-rw-r--  1 prvasque prvasque 844M Aug  8 13:44 SRR6925951.bam
+-rw-rw-r--  1 prvasque prvasque 783M Aug  8 16:04 SRR6925998.bam
 
