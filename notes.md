@@ -1169,3 +1169,98 @@ prvasque@c9-75:/home/ywdong/Data/alignments/merge$ samtools flagstat 009.bam
 -rw-rw-r--  1 prvasque prvasque 844M Aug  8 13:44 SRR6925951.bam
 -rw-rw-r--  1 prvasque prvasque 783M Aug  8 16:04 SRR6925998.bam
 
+# Post HTSEQ-count
+
+This all takes place in prvasque@farm:~/projects/mangrove_killifish_project/alignment/counts$
+```
+paste *.txt  | tail -n +2 |awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
+cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt > test2.out.txt
+paste *count.txt | head -n 1 | sed 's/\.sorted\.bam//g' > names.txt
+cat names.txt test2.out.txt |  tr ' ' \\t > test4.out.txt
+```
+Problems I ran into
+1. All my SRR\*count.txt DO NOT include the name at the top of the file, this means that in the third step I was unable to paste the names of each sample above their corresponding outputs. Three possibilities to fix this, 1) go in and add the name of each sample at the top of every file (long and tideous, but doable) or 2) Write new code that takes the name of the file and adds it to the top line of each file (short and fun) or 3) name a new file with all the file names and the just use that.
+option 3 looks like it could work.
+
+Here is what I did to fix this
+```
+touch names.txt
+ls SRR* >> names.txt
+```
+Created names.txt that has all the names of the other files. Now I should be able to remove the count.txt part of the files in the names file
+
+
+```
+touch test.names.txt
+ls SRR* | sed 's/count\.txt//g' >> test.names.txt
+touch names.txt
+echo $(cat test.names.txt) >> names.txt
+```
+Now my names file will have all the names of the samples at the top.
+
+```
+paste *.txt  | tail -n +2 |awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
+cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt > test2.out.txt
+touch test.names.txt
+ls SRR* | sed 's/count\.txt//g' >> test.names.txt
+touch names.txt
+echo $(cat test.names.txt) >> names.txt
+cat names.txt test2.out.txt | tr ' ' \\t > test4.out.txt
+```
+Worked well, only one problem, in the row with all the sample names it doesn't start with a space (the first column is the gene ids but the first spot in the first row is SRR6925941, so I need to add a place holder). I'll do this by writing in an echo statement after the 'touch names' command.
+
+```
+paste *.txt  | tail -n +2 |awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
+cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt > test2.out.txt
+touch test.names.txt
+echo NA >> test.names.txt
+ls SRR* | sed 's/count\.txt//g' >> test.names.txt
+touch names.txt
+echo $(cat test.names.txt) >> names.txt
+cat names.txt test2.out.txt | tr ' ' \\t > test4.out.txt
+```
+Okay perfect, I now have a tab spaced text file that should be able to be used for stats analysis.
+
+Getting file onto my local machine
+
+```
+scp -P 2022 prvasque@farm.cse.ucdavis.edu:/home/prvasque/projects/mangrove_killifish_project/alignment/counts/test4.out.txt test4.out.txt
+```
+
+# Stats analysis!
+
+I'm making a R markdown document on R that will be used for reference for this part.
+```
+install.packages("limma")
+install.packages("edgeR")
+install.packages("ggplot2")
+install.packages("gplots")
+install.packages("dendextend")
+install.packages("splines")
+
+library(limma)
+library(edgeR)
+library(ggplot2)
+library(gplots)
+library(dendextend)
+library(splines)
+```
+```
+setwd("/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/data")
+```
+I now need to go in and rename all the samples in yunwei's sample table csv files. Fun!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
