@@ -1211,14 +1211,16 @@ Worked well, only one problem, in the row with all the sample names it doesn't s
 
 ```
 paste *.txt  | tail -n +2 |awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
-cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt > test2.out.txt
+cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt | tr ' ' \\t > test2.out.txt 
 touch test.names.txt
-echo NA >> test.names.txt
-ls SRR* | sed 's/count\.txt//g' >> test.names.txt
+# echo NA >> test.names.txt
+ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > test.names.txt
 touch names.txt
 echo $(cat test.names.txt) >> names.txt
 cat names.txt test2.out.txt | tr ' ' \\t > test4.out.txt
 ```
+Note: Do not need to add the NA step as opening the file in R will automatically know that the first thing is supposted to be the header.
+
 Okay perfect, I now have a tab spaced text file that should be able to be used for stats analysis.
 
 Getting file onto my local machine
