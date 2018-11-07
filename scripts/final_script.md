@@ -22,5 +22,5 @@ NOTE: Not completed
  ### 1.1 - Getting the Data
  
  https://trace.ncbi.nlm.nih.gov/Traces/study/?acc=SRP136920
- 
+ How to do the VDI config stuff http://seqanswers.com/forums/showpost.php?p=155136&postcount=7
  
