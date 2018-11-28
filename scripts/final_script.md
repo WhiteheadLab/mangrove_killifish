@@ -92,9 +92,124 @@ cp $DIR/*.fastq.gz /home/prvasque/projects/mangrove_killifish_project/raw_data/f
 
 # rm -rf /scratch/prvasque/$SLURM_JOBID
 ```
+Now to run fastqc
+```
+#!/bin/bash -l
+#SBATCH -J fastqc
+#SBATCH -o /home/prvasque/slurm-log/fastqc-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/fastqc-stderr-%j.txt
+#SBATCH --mem=6000
+#SBATCH -c 2
+#SBATCH -t 6:00:00
+#SBATCH --array=25941-26018
 
+# Load the fastqc module
+module load fastqc
 
+# Assign directory of data
+DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data
 
+# Code to run fastqc
+fastqc -o $DIR/fastqc/ $DIR/fastq/SRR69$SLURM_ARRAY_TASK_ID*.fastq.gz
+```
+### 1.3 Trimmomatic
+```
+#!/bin/bash -l
+#SBATCH -c 6
+#SBATCH --mem=16000
+#SBATCH -J trimmomatic
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+#SBATCH -o /home/prvasque/slurm-log/trimmomatic_stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/trimmomatic_stderr-%j.txt
+#SBATCH --array=25941-26018
+#SBATCH --time=12:00:00
+#SBATCH -p med
+
+# Directory of data
+DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
+
+# Output directory
+outdir=/home/prvasque/projects/mangrove_killifish_project/trim/data/
+
+# Change to 
+cd $DIR
+
+# Trimmomatic code
+java -jar /share/apps/Trimmomatic-0.36/trimmomatic.jar PE SRR69$SLURM_ARRAY_TASK_ID\_1.fastq.gz \
+        SRR69$SLURM_ARRAY_TASK_ID\_2.fastq.gz $outdir/SRR69$SLURM_ARRAY_TASK_ID\_1.qc.fq.gz \
+        $outdir/orphans/69$SLURM_ARRAY_TASK_ID\_1_se $outdir/SRR69$SLURM_ARRAY_TASK_ID\_2.qc.fq.gz \
+        $outdir/orphans/69$SLURM_ARRAY_TASK_ID\_2_se \
+        ILLUMINACLIP:/home/prvasque/projects/mangrove_killifish_project/trim/adapters/NEBnextAdapt.fa:2:40:15 \
+        LEADING:2 TRAILING:2 SLIDINGWINDOW:4:2 MINLEN:25
+```
+### 1.4.1 Downloading reference genome from NCBI
+```
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_marmoratus/latest_assembly_versions/GCF_001649575.1_ASM164957v1/GCF_001649575.1_ASM164957v1_genomic.gff.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_marmoratus/latest_assembly_versions/GCF_001649575.1_ASM164957v1/GCF_001649575.1_ASM164957v1_genomic.fna.gz
+```
+These files are gzipped so make sure to unzip them before continuing
+```
+gunzip *.gz
+```
+### 1.4.2 Mapping reads to reference genome using STAR
+```
+#!/bin/bash -l
+#SBATCH --mem=40000
+#SBATCH --cpus-per-task=24
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/scripts/
+#SBATCH -o /home/prvasque/slurm-log/starindex/starindex-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/starindex/starindex-stderr-%j.txt
+#SBATCH -J starindex_korea_latest
+#SBATCH -t 6:00:00
+#SBATCH -p med
+
+# Load modules for STAR
+module load perlnew/5.18.4
+module load star/2.4.2a
+
+# Directory of reference genome
+DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome/
+cd $DIR
+
+# Code for STAR alignment
+STAR --runMode genomeGenerate --genomeDIR $DIR --genomeFastaFiles GCF_001649575.1_ASM164957v1_genomic.fna \
+--sjdbGTFtagExonParentTranscript Parent --sjdbGTFfile GCF_001649575.1_ASM164957v1_genomic.gff \
+--sjdbOverhang 99
+
+echo "genome indexed"
+```
+### 1.4.3 Aligning sequences with the korea genome
+```
+#!/bin/bash -l
+#SBATCH --cpus-per-task=24
+#SBATCH --mem=40000
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/scripts/
+#SBATCH -o /home/prvasque/slurm-log/staralignment/stargenoalign-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/staralignment/stargenoalign-stderr-%j.txt
+#SBATCH -J staralignment_last_korea
+#SBATCH -a 25941-26018
+#SBATCH -t 6:00:00
+#SBATCH -p med
+
+# Load modules
+module load perlnew/5.18.4
+module load star/2.4.2a
+
+# Directory of reference genome
+genome_dir=/home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome/
+
+# Directory of trimmed data
+dir=/home/prvasque/projects/mangrove_killifish_project/trim/data
+
+# Output directory
+outdir=/home/prvasque/projects/mangrove_killifish_project/alignment
+
+# Alignment code
+STAR --genomeDir $genome_dir \
+ --runThreadN 24 --readFilesCommand zcat --sjdbInsertSave all \
+ --readFilesIn ${dir}/SRR69${SLURM_ARRAY_TASK_ID}_1.qc.fq.gz ${dir}/SRR69${SLURM_ARRAY_TASK_ID}_2.qc.fq.gz \
+ --outFileNamePrefix ${outdir}/SRR69${SLURM_ARRAY_TASK_ID}
+ ```
  
  
  
