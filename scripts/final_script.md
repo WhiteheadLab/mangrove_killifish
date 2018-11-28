@@ -211,9 +211,44 @@ STAR --genomeDir $genome_dir \
  --runThreadN 24 --readFilesCommand zcat --sjdbInsertSave all \
  --readFilesIn ${dir}/SRR69${SLURM_ARRAY_TASK_ID}_1.qc.fq.gz ${dir}/SRR69${SLURM_ARRAY_TASK_ID}_2.qc.fq.gz \
  --outFileNamePrefix ${outdir}/SRR69${SLURM_ARRAY_TASK_ID}
- ```
- 
- 
- 
+```
+### 1.5.1 Samtools
+Our files are currently in the .sam file format. However, for the next step in the pipeline they need to be in .bam format. Samtools will help us accomplish this goal.
+```
+#!/bin/bash -l
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/alignment/
+#SBATCH --mem=16000
+#SBATCH -o /home/prvasque/slurm-log/samtools/sambam-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/samtools/sambam-stderr-%j.txt
+#SBATCH -J sam_to_bam
+#SBATCH -p high
+#SBATCH -t 12:00:00
+#SBATCH -a 25941-26018%6
+
+# Load module
+module load samtools
+
+# Create scratch directories
+DIR=/scratch/prvasque/$SLURM_JOBID
+mkdir -p $DIR/
+
+# Echo hostname of file
+echo 'hostname'
+
+# Copy sam file into scratch directory
+cp /home/prvasque/projects/mangrove_killifish_project/alignment/SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam \
+$DIR/SRR69${SLURM_ARRAY_TASK_ID}.Aligned.out.sam
+
+# Code for using samtools
+srun samtools view -bS -u $DIR/SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam | \
+ samtools sort --output-fmt BAM -o $DIR/SRR69${SLURM_ARRAY_TASK_ID}.bam
+
+# Copy bam file back into normal directory
+cp $DIR/SRR69${SLURM_ARRAY_TASK_ID}.bam /home/prvasque/projects/mangrove_killifish_project/alignment/SRR69${SLURM_ARRAY_TASK_ID}.bam 
+
+# Remove scratch directory
+rm -rf /scratch/prvasque/$SLURM_JOBID/
+```
+### 1.5.2 Santools sort
  https://trace.ncbi.nlm.nih.gov/Traces/study/?acc=SRP136920
  
