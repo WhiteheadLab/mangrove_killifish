@@ -1,6 +1,8 @@
 # Final Script
 NOTE: Not completed
 
+[TOC]
+
 ## Index
  0.1 - Introduction
  1.1 - Get Data
