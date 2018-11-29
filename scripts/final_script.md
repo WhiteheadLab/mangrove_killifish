@@ -250,5 +250,80 @@ cp $DIR/SRR69${SLURM_ARRAY_TASK_ID}.bam /home/prvasque/projects/mangrove_killifi
 rm -rf /scratch/prvasque/$SLURM_JOBID/
 ```
 ### 1.5.2 Santools sort
+```
+#!/bin/bash -l
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/alignment/bam/
+#SBATCH --mem=16000
+#SBATCH -o /home/prvasque/slurm-log/samtools/samsort-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/samtools/samsort-stderr-%j.txt
+#SBATCH -J samsort
+#SBATCH -p high
+#SBATCH -t 12:00:00
+#SBATCH -a 25941-26018%8
+
+# Directory of data
+DIR=/home/prvasque/projects/mangrove_killifish_project/alignment
+cd $DIR
+
+# Echo SRR accession name
+echo SRR69${SLURM_ARRAY_TASK_ID}
+
+# Code
+samtools sort -n -o $DIR/sorted/SRR69${SLURM_ARRAY_TASK_ID}_sorted.bam \
+	$DIR/bam/SRR69${SLURM_ARRAY_TASK_ID}.bam
+
+echo 'done!'
+```
+### 1.6 HTSeq-Count
+```
+#!/bin/bash -l
+#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/scripts/
+#SBATCH --mem=16000
+#SBATCH -o /home/prvasque/slurm-log/htseq/hts_count-stdout-%j.txt
+#SBATCH -e /home/prvasque/slurm-log/htseq/hts_count-stderr-%j.txt
+#SBATCH -J hts_count
+#SBATCH -p high
+#SBATCH -t 12:00:00
+#SBATCH -a 25941-26018%10
+
+
+#module load pysam
+#module load python
+#module load HTSeq
+
+# Load modules
+module load bio
+
+# Echo SRR accension number
+echo SRR${SLURM_ARRAY_TASK_ID}
+
+# Directory of sorted bam files
+DIR=/home/prvasque/projects/mangrove_killifish_project/alignment/sorted
+
+# Directory of reference genome
+REF_DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome
+
+# Output directory
+OUT_DIR=/home/prvasque/projects/mangrove_killifish_project/alignment/counts
+
+# Code
+htseq-count --type=gene -i Dbxref -f bam -s no $DIR/SRR69${SLURM_ARRAY_TASK_ID}_sorted.bam \
+	$REF_DIR/GCF_001649575.1_ASM164957v1_genomic.gff > \
+	$OUT_DIR/SRR69${SLURM_ARRAY_TASK_ID}count.txt
+
+echo finished
+```
+### 1.7 Formatting Files for R analysis
+This code should be done on the files created from HTSeq-Count
+```
+paste *.txt  | tail -n +2 |awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
+cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt | tr ' ' \\t > test2.out.txt 
+touch test.names.txt
+# echo NA >> test.names.txt
+ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > test.names.txt
+touch names.txt
+echo $(cat test.names.txt) >> names.txt
+cat names.txt test2.out.txt | tr ' ' \\t > test4.out.txt
+```
  https://trace.ncbi.nlm.nih.gov/Traces/study/?acc=SRP136920
  
