@@ -353,5 +353,18 @@ data.frame(sampleTable_control)
 sampleTable_treatment <- subset(sampleTable, Air == "A")
 data.frame(sampleTable_treatment)
 ```
+### 2.3 Set up reads count file and Subset data
+```
+# Set up read counts file
+y <- read.table("~/Whiteheadlab/Projects/Mangrove_killifish/data/test2.out.txt", header = FALSE, sep = "\t", row.names = 1)
+z <- scan("~/Whiteheadlab/Projects/Mangrove_killifish/data/test.names.txt", sep = '\t', what = "character")
+colnames(y) <- z
+```
+```
+# Subsetting data
+y_control <- subset(y, select = c(row.names(sampleTable_control)))
+y_treatment <- subset(y, select = c(row.names(sampleTable_treatment)))
+```
+
  https://trace.ncbi.nlm.nih.gov/Traces/study/?acc=SRP136920
  
