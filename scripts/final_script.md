@@ -325,5 +325,33 @@ touch names.txt
 echo $(cat test.names.txt) >> names.txt
 cat names.txt test2.out.txt | tr ' ' \\t > test4.out.txt
 ```
+
+### 2.0 R Code
+
+### 2.1 Install dependancies
+```
+source("https://bioconductor.org/biocLite.R")
+biocLite("limma")
+biocLite("edgeR")
+install.packages("ggplot2")
+install.packages("gplots")
+install.packages("dendextend")
+
+library(limma)
+library(edgeR)
+library(ggplot2)
+library(gplots)
+library(dendextend)
+```
+### 2.2 Set up Design Matrix
+The file used for the design matrix can be found [here](https://github.com/prvasquez/mangrove_killifish/blob/master/design.matrixSRR08282018.csv) 
+```
+sampleTable <- read.csv("design.matrixSRR08282018.csv", row.names = 1)
+data.frame(sampleTable)
+sampleTable_control <- subset(sampleTable, Air == "C")
+data.frame(sampleTable_control)
+sampleTable_treatment <- subset(sampleTable, Air == "A")
+data.frame(sampleTable_treatment)
+```
  https://trace.ncbi.nlm.nih.gov/Traces/study/?acc=SRP136920
  
