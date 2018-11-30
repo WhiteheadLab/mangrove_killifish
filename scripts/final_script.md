@@ -365,6 +365,89 @@ colnames(y) <- z
 y_control <- subset(y, select = c(row.names(sampleTable_control)))
 y_treatment <- subset(y, select = c(row.names(sampleTable_treatment)))
 ```
+### 2.4 Filter data
+```
+y <- y[rowSums(y>10)>5, ]
+y_control <- y_control[rowSums(y_control>10)>5, ]
+y_treatment <- y_treatment[rowSums(y_treatment>10)>5, ]
+data.frame(y_control)
+data.frame(y_treatment)
+```
+### 2.5 Create Counts Matrix
+```
+dge_control <- DGEList(counts = y_control)
+dge_control <- calcNormFactors(dge_control)
+logCPM_control <- cpm(dge_control, prior.count = 2, log = TRUE)
+```
+### 2.6 PCA Plot for control
+```
+MDS_dge_control <- plotMDS(dge_control, gene.selection = "common", main = "MDS_control_dge")
+ MDS_logCPM_control <- plotMDS(logCPM_control, gene.selection = "common", main = "MDS_control_logcpm")
+ MDS_logCPM_control <- cbind(sampleTable_control, MDS_logCPM_control$cmdscale.out)
+
+ 
+strain_C <- sampleTable_control$Strain
+col.fill <- c("blue", "yellow", "red")
+shape <- c(22,24)
+plotMDS(logCPM_control, pch = shape[as.factor(sampleTable_control$Strain)], bg = col.fill[as.factor(sampleTable_control$Time)], cex = 1.5, lwd = 3, gene.selection = "common", plot = TRUE, main = "MDS_control_logCPM")
+legend("topleft", legend = c("0d", "3d", "7d"), col = col.fill, pch = 15)
+legend("topright", legend = c("FW", "HON11"), pch = shape)
+```
+### 2.7 Design Matrix for Control
+```
+Time_control <- factor(sampleTable_control$Time, levels = c("0", "72", "164"))
+Time_control <- relevel(Time_control, ref = "0")
+Strain_control <- factor(sampleTable_control$Strain, levels = c("HON11", "FW"))
+designmatrix_control <- model.matrix(~Time_control*Strain_control)
+colnames(designmatrix_control)
+```
+### 2.8 Voom and Lmfit for Control
+```
+v_control <- voom(dge_control, designmatrix_control, plot = TRUE)
+colnames(v_control)
+
+fit_control <- lmFit(v_control, designmatrix_control)
+fit_control <- eBayes(fit_control)
+summary(decideTests(fit_control))
+Dif_gene_control <- topTable(fit_control, coef = 5:6, adjust.method = "BH")
+sum(Dif_gene_control$adj.P.Val<0.05)
+```
+### 2.9 Volcano Plot for Control
+```
+volcanoplot(fit_control, coef = 5:6, main = "Control_two_strain")
+```
+### 2.10 Data Analysis for Treatment
+```
+dge_treatment <- DGEList(counts = y_treatment)
+dge_treatment <- calcNormFactors(dge_treatment)
+logcpm_treatment <- cpm(dge_treatment, prior.count = 2, log = TRUE)
+dge_treatment$samples
+```
+### 2.11 PCA plot for Treatment
+```
+plotMDS(dge_treatment, gene.selection = "common", main = "MDS_air_dge")
+strain_T <- sampleTable_treatment$Strain
+col.fill <- c("blue", "skyblue", "yellow", "pink", "red", "black")
+shape <- c(22, 24)
+MDS_logCPM_treatment <- plotMDS(logcpm_treatment, pch = shape[as.factor(sampleTable_treatment$Strain)], bg = col.fill[as.factor(sampleTable_treatment$Time)], cex = 1.5, lwd = 3, gene.selection = "common", plot = TRUE, main = "MDS_air_logCPM")
+legend("topleft", legend =  c("0d", "1h", "6h", "1d", "3d", "7d"), col = col.fill, pch = 15)
+legend("topright", legend = c("FW", "HON11"), pch = shape)
+MDS_logCPM_treatment <- cbind(sampleTable_treatment, MDS_logCPM_treatment$cmdscale.out)
+```
+### 2.12 Data Matrix for Treatment
+```
+Time_treatment <- factor(sampleTable_treatment$Time, levels = c("0", "1", "6", "24", "72", "164"))
+Time_treatment <- relevel(Time_treatment, ref = "0")
+Strain_treatment <- factor(sampleTable_treatment$Strain, levels = c("HON11", "FW"))
+designmatrix_treatment <- model.matrix(~Time_treatment * Strain_treatment)
+colnames(designmatrix_treatment)
+```
+### 2.13
+
+
+
+
+
 
  https://trace.ncbi.nlm.nih.gov/Traces/study/?acc=SRP136920
  
