@@ -2,25 +2,7 @@
 NOTE: Not completed
 
 [TOC]
-
-## Index
- 0.1 - Introduction
- 1.1 - Get Data
- 1.1.1 - Downloading Read Data off NCBI
- 1.1.2 - Downloading Reference Genome off NCBI
- 1.2 - Fastqc
- 1.3 - Trimmomatic
- 1.4 - Map Reads to reference genome
- 1.4.1 - Index Reference genome
- 1.4.2 - Align sequence data to the Indexed Reference Genome
- 1.5 - Converting to Bam file
- 1.6 - Quantifying RNAseq data
- 1.6.1 - HTSeq Count for expression quantification
- 1.6.2 - Merge HTSeq count outputs to one file for data analysis
- 
- 
- 
- 
+   
  ### 1.1 - Getting the Data
  
 First step is to download the list of SRR Accension numbers. The text file used in this script can be found [here](https://github.com/prvasquez/mangrove_killifish/blob/master/SRR_Acc_List.txt).
@@ -328,9 +310,13 @@ cat names.txt test2.out.txt | tr ' ' \\t > test4.out.txt
 
 ### 2.0 R Code
 
-### 2.1 Install dependancies
-```
-source("https://bioconductor.org/biocLite.R")
+# Set directory
+setwd("/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/data") 
+
+# Install dependancies
+
+library("BiocInstaller", lib.loc="/Library/Frameworks/R.framework/Versions/3.5/Resources/library")
+
 biocLite("limma")
 biocLite("edgeR")
 install.packages("ggplot2")
@@ -342,107 +328,82 @@ library(edgeR)
 library(ggplot2)
 library(gplots)
 library(dendextend)
-```
-### 2.2 Set up Design Matrix
-The file used for the design matrix can be found [here](https://github.com/prvasquez/mangrove_killifish/blob/master/design.matrixSRR08282018.csv) 
-```
+
+# Design Matrix
 sampleTable <- read.csv("design.matrixSRR08282018.csv", row.names = 1)
 data.frame(sampleTable)
 sampleTable_control <- subset(sampleTable, Air == "C")
 data.frame(sampleTable_control)
-sampleTable_treatment <- subset(sampleTable, Air == "A")
+sampleTable_treatment <- subset(sampleTable, Air == "A" | Time == 0) # include time = 0 for the intercept group
 data.frame(sampleTable_treatment)
-```
-### 2.3 Set up reads count file and Subset data
-```
-# Set up read counts file
+
+# Setup read counts file
 y <- read.table("~/Whiteheadlab/Projects/Mangrove_killifish/data/test2.out.txt", header = FALSE, sep = "\t", row.names = 1)
 z <- scan("~/Whiteheadlab/Projects/Mangrove_killifish/data/test.names.txt", sep = '\t', what = "character")
 colnames(y) <- z
-```
-```
-# Subsetting data
+
+# Subset data
 y_control <- subset(y, select = c(row.names(sampleTable_control)))
 y_treatment <- subset(y, select = c(row.names(sampleTable_treatment)))
-```
-### 2.4 Filter data
-```
+
+# Filter data
 y <- y[rowSums(y>10)>5, ]
 y_control <- y_control[rowSums(y_control>10)>5, ]
-y_treatment <- y_treatment[rowSums(y_treatment>10)>5, ]
+y_treatment <- y_treatment[rowSums(y_treatment>10)>5, ] # ignore all read counts under 5 (or 10?)
 data.frame(y_control)
 data.frame(y_treatment)
-```
-### 2.5 Create Counts Matrix
-```
+
+# Create the counts matrix for control
 dge_control <- DGEList(counts = y_control)
 dge_control <- calcNormFactors(dge_control)
 logCPM_control <- cpm(dge_control, prior.count = 2, log = TRUE)
-```
-### 2.6 PCA Plot for control
-```
-MDS_dge_control <- plotMDS(dge_control, gene.selection = "common", main = "MDS_control_dge")
- MDS_logCPM_control <- plotMDS(logCPM_control, gene.selection = "common", main = "MDS_control_logcpm")
- MDS_logCPM_control <- cbind(sampleTable_control, MDS_logCPM_control$cmdscale.out)
 
- 
-strain_C <- sampleTable_control$Strain
-col.fill <- c("blue", "yellow", "red")
-shape <- c(22,24)
-plotMDS(logCPM_control, pch = shape[as.factor(sampleTable_control$Strain)], bg = col.fill[as.factor(sampleTable_control$Time)], cex = 1.5, lwd = 3, gene.selection = "common", plot = TRUE, main = "MDS_control_logCPM")
-legend("topleft", legend = c("0d", "3d", "7d"), col = col.fill, pch = 15)
-legend("topright", legend = c("FW", "HON11"), pch = shape)
-```
-### 2.7 Design Matrix for Control
-```
+# Design matrix for control
 Time_control <- factor(sampleTable_control$Time, levels = c("0", "72", "164"))
 Time_control <- relevel(Time_control, ref = "0")
 Strain_control <- factor(sampleTable_control$Strain, levels = c("HON11", "FW"))
 designmatrix_control <- model.matrix(~Time_control*Strain_control)
 colnames(designmatrix_control)
-```
-### 2.8 Voom and Lmfit for Control
-```
+
+# Fit voom for control
 v_control <- voom(dge_control, designmatrix_control, plot = TRUE)
 colnames(v_control)
 
+# Lmfit for control
 fit_control <- lmFit(v_control, designmatrix_control)
 fit_control <- eBayes(fit_control)
 summary(decideTests(fit_control))
 Dif_gene_control <- topTable(fit_control, coef = 5:6, adjust.method = "BH")
 sum(Dif_gene_control$adj.P.Val<0.05)
-```
-### 2.9 Volcano Plot for Control
-```
-volcanoplot(fit_control, coef = 5:6, main = "Control_two_strain")
-```
-### 2.10 Data Analysis for Treatment
-```
+
+# Create counts matrix for treatment group
 dge_treatment <- DGEList(counts = y_treatment)
 dge_treatment <- calcNormFactors(dge_treatment)
 logcpm_treatment <- cpm(dge_treatment, prior.count = 2, log = TRUE)
 dge_treatment$samples
-```
-### 2.11 PCA plot for Treatment
-```
-plotMDS(dge_treatment, gene.selection = "common", main = "MDS_air_dge")
-strain_T <- sampleTable_treatment$Strain
-col.fill <- c("blue", "skyblue", "yellow", "pink", "red", "black")
-shape <- c(22, 24)
-MDS_logCPM_treatment <- plotMDS(logcpm_treatment, pch = shape[as.factor(sampleTable_treatment$Strain)], bg = col.fill[as.factor(sampleTable_treatment$Time)], cex = 1.5, lwd = 3, gene.selection = "common", plot = TRUE, main = "MDS_air_logCPM")
-legend("topleft", legend =  c("0d", "1h", "6h", "1d", "3d", "7d"), col = col.fill, pch = 15)
-legend("topright", legend = c("FW", "HON11"), pch = shape)
-MDS_logCPM_treatment <- cbind(sampleTable_treatment, MDS_logCPM_treatment$cmdscale.out)
-```
-### 2.12 Data Matrix for Treatment
-```
-Time_treatment <- factor(sampleTable_treatment$Time, levels = c("0", "1", "6", "24", "72", "164"))
-Time_treatment <- relevel(Time_treatment, ref = "0")
+
+# Design matrix for treatment
+Time_treatment <- factor(sampleTable_treatment$Time, levels = c("0","1", "6", "24", "72", "164"))
+Time_treatment <- relevel(Time_treatment, ref = "1")
 Strain_treatment <- factor(sampleTable_treatment$Strain, levels = c("HON11", "FW"))
-designmatrix_treatment <- model.matrix(~Time_treatment * Strain_treatment)
+designmatrix_treatment <- model.matrix(~Time_treatment*Strain_treatment)
 colnames(designmatrix_treatment)
-```
-### 2.13
+
+# Fit voom for treatment
+v_treatment <- voom(dge_treatment, designmatrix_treatment, plot = TRUE)
+colnames(v_treatment)
+
+# Lm fit for treatment
+fit_treatment <- lmFit(v_treatment, designmatrix_treatment)
+fit_treatment <- eBayes(fit_treatment)
+summary(decideTests(fit_treatment))
+
+# Diff expressed genes interactive
+# Can adjust "number" to get top "X" genes
+Dif_gene_treatment_all <- topTable(fit_treatment, coef = 7:10, adjust.method = "BH", number = Inf, p.value = 0.05)
+sum(Dif_gene_treatment_all$adj.P.Val<0.05) # Found 3756 significant genes
+write.csv(Dif_gene_treatment_all, file = "/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/data/Dif_gene_treatment_all.csv", row.names = TRUE)
+Dif_gene_treatment_all_names <- rownames(Dif_gene_treatment_all)
 
 
 
