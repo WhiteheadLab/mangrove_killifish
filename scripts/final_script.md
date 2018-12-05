@@ -309,7 +309,7 @@ cat names.txt test2.out.txt | tr ' ' \\t > test4.out.txt
 ```
 
 ### 2.0 R Code
-
+```
 # Set directory
 setwd("/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/data") 
 
@@ -404,7 +404,7 @@ Dif_gene_treatment_all <- topTable(fit_treatment, coef = 7:10, adjust.method = "
 sum(Dif_gene_treatment_all$adj.P.Val<0.05) # Found 3756 significant genes
 write.csv(Dif_gene_treatment_all, file = "/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/data/Dif_gene_treatment_all.csv", row.names = TRUE)
 Dif_gene_treatment_all_names <- rownames(Dif_gene_treatment_all)
-
+```
 
 
 
