@@ -12,10 +12,12 @@
 module load perlnew/5.18.4
 module load star/2.4.2a
 
-outdir=/home/prvasque/projects/mangrove_killifish_project/alignment
-dir=/home/prvasque/projects/mangrove_killifish_project/trim/data
+outdir=./prvasquez/mangrove_killifish/data/alignment
+dir=./prvasquez/mangrove_killifish/data/trim
 
-STAR --genomeDir /home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome/ \
+genome_dir=./prvasquez/mangrove_killifish/ref/
+
+STAR --genomeDir ${genome_dir} \
 	--runThreadN 24 --readFilesCommand zcat --sjdbInsertSave all \
 	--readFilesIn ${dir}/SRR69${SLURM_ARRAY_TASK_ID}_1.qc.fq.gz ${dir}/SRR69${SLURM_ARRAY_TASK_ID}_2.qc.fq.gz \
 	--outFileNamePrefix ${outdir}/SRR69${SLURM_ARRAY_TASK_ID}
