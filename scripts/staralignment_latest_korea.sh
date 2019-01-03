@@ -5,7 +5,7 @@
 #SBATCH -o /home/prvasque/slurm-log/staralignment/stargenoalign-stdout-%j.txt
 #SBATCH -e /home/prvasque/slurm-log/staralignment/stargenoalign-stderr-%j.txt
 #SBATCH -J staralignment_last_korea
-#SBATCH -a 25943-26018
+#SBATCH -a 25941-26018
 #SBATCH -t 6:00:00
 #SBATCH -p med
 
