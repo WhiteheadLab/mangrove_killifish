@@ -35,6 +35,42 @@ sbatch ./prvasquez/mangrove_killifish/scripts/fastqdump.sh
 ```
 
 ## 4. Run Trimmomatic
+Code to run trimmomatic
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/fastqc.sh
+sbatch ./prvasquez/mangrove_killifish/scripts/trimmomatic.sh
+```
+
+## 5. Download reference genome from NCBI
+The next step is to download the reference genome files from NCBI.
+This step has three commands that should all be run together in order.
+```
+cd ./prvasquez/mangrove_killifish/data/ref/
+
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_marmoratus/latest_assembly_versions/GCF_001649575.1_ASM164957v1/GCF_001649575.1_ASM164957v1_genomic.gff.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_marmoratus/latest_assembly_versions/GCF_001649575.1_ASM164957v1/GCF_001649575.1_ASM164957v1_genomic.fna.gz
+
+gunzip GCF*
+```
+
+## 6. Map reads to reference genome using STAR alignment
+```
+sbatch ./prvasquez/mangrove_killifish/scripts/starindex_korea_latest.sh
+```
+## 7. Align sequences with Korea Genome
+```
+sbatch ./prvasquez/mangrove_killifish/scripts/staralignment_latest_korea.sh
+```
+## 8. Samtools
+```
+sbatch ./prvasquez/mangrove_killifish/scripts/sam_to_bam2.sh
+```
+## 9. Samtools sort
+```
+sbatch ./prvasquez/mangrove_killifish/scripts/samsort.sh
+```
+## 10. HTSeq-count
+```
+sbatch ./prvasquez/mangrove_killifish/scripts/htseq_count.sh
+```
+
 
