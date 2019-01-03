@@ -18,9 +18,11 @@ module load bio
 
 echo SRR${SLURM_ARRAY_TASK_ID}
 
-DIR=/home/prvasque/projects/mangrove_killifish_project/alignment/sorted
-REF_DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome
-OUT_DIR=/home/prvasque/projects/mangrove_killifish_project/alignment/counts
+DIR=./prvasquez/mangrove_killifish/data/sorted
+
+REF_DIR=./prvasquez/mangrove_killifish/data/ref
+
+OUT_DIR=./prvasquez/mangrove_killifish/data/counts
 
 htseq-count --type=gene -i Dbxref -f bam -s no $DIR/SRR69${SLURM_ARRAY_TASK_ID}_sorted.bam \
 	$REF_DIR/GCF_001649575.1_ASM164957v1_genomic.gff > \
