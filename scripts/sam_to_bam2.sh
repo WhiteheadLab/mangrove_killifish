@@ -13,11 +13,10 @@
 
 module load samtools
 
-DIR=/home/prvasque/projects/mangrove_killifish_project/alignment
-cd $DIR
+DIR=./prvasquez/mangrove_killifish/data
 
 name=SRR69${SLURM_ARRAY_TASK_ID}
 echo $name
 
-srun samtools view -bS -u SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam | \
+srun samtools view -bS -u ${DIR}/alignment/SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam | \
  samtools sort --output-fmt BAM -o ${DIR}/bam/SRR69${SLURM_ARRAY_TASK_ID}.bam
