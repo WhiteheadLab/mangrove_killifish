@@ -8,7 +8,6 @@
 #SBATCH -t 12:00:00
 #SBATCH -a 25941-26018%10
 
-#Modified as of August 11, 2018
 
 #module load pysam
 #module load python
