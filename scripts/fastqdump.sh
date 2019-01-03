@@ -8,13 +8,8 @@
 
 module load sratoolkit
 
-DIR=/scratch/prvasque/$SLURM_JOBID
-mkdir -p $DIR
+DIR=./prvasquez/mangrove_killifish/data/raw_data/
 
-cp /home/prvasque/projects/mangrove_killifish_project/raw_data/sra/SRR69$SLURM_ARRAY_TASK_ID.sra $DIR
+fastq-dump -I --split-files --gzip -o ./prvasquez/mangrove_killifish/data/fastq/ $DIR/SRR69$SLURM_ARRAY_TASK_ID.sra 
 
-fastq-dump -I --split-files --gzip $DIR/SRR69$SLURM_ARRAY_TASK_ID.sra 
 
-cp $DIR/*.fastq.gz /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
-
-# rm -rf /scratch/prvasque/$SLURM_JOBID
