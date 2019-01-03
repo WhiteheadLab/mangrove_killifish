@@ -11,4 +11,4 @@ module load sratoolkit
 
 DIR=./prvasquez/mangrove_killifish/data/raw_data/
 
-fastq-dump -I --split-files --gzip -o ./prvasquez/mangrove_killifish/data/fastq/SRR69${SLURM_ARRAY_TASK_ID}.fastq.gz $DIR/SRR69$SLURM_ARRAY_TASK_ID.sra 
+fastq-dump -I --split-files --gzip -o ./prvasquez/mangrove_killifish/data/fastq/SRR69${SLURM_ARRAY_TASK_ID}.fastq.gz $DIR/SRR69${SLURM_ARRAY_TASK_ID}.sra 
