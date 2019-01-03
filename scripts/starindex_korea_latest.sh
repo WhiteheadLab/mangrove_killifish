@@ -10,7 +10,7 @@
 module load perlnew/5.18.4
 module load star/2.4.2a
 
-DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data/reference_genome/test/
+DIR=./prvasquez/mangrove_killifish/data/ref/
 
 cd $DIR
 
