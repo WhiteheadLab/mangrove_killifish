@@ -11,4 +11,4 @@ module load fastqc
 
 DIR=./prvasquez/mangrove_killifish/data/
 
-fastqc -o $DIR/fastqc/ $DIR/fastq/SRR69${SLURM_ARRAY_TASK_ID}*.fastq.gz
+fastqc -o $DIR/fastqc/ $DIR/fastq/SRR69${SLURM_ARRAY_TASK_ID}.fastq.gz
