@@ -7,9 +7,9 @@
 
 module load sratoolkit
 
-file=/home/prvasque/projects/mangrove_killifish_project/raw_data/sra/SRR_Acc_List.txt
-IFS=$'\n'
-DIR="/home/prvasque/projects/mangrove_killifish_project/raw_data/sra/"
+file="./prvasquez/mangrove_killifish/SRR_Acc_List.txt"
+# IFS=$'\n' Do i need this?
+DIR="./prvasquez/mangrove_killifish/data/raw_data/"
 
 cd $DIR
 
