@@ -10,9 +10,7 @@
 
 #samtools sort
 
-DIR=/home/prvasque/projects/mangrove_killifish_project/alignment
-
-cd $DIR
+DIR=./prvasquez/mangrove_killifish/data
 
 echo SRR69${SLURM_ARRAY_TASK_ID}
 
