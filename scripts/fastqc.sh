@@ -8,6 +8,6 @@
 
 module load fastqc
 
-DIR=/home/prvasque/projects/mangrove_killifish_project/raw_data
+DIR=./prvasquez/mangrove_killifish/data/
 
 fastqc -o $DIR/fastqc/ $DIR/fastq/SRR69$SLURM_ARRAY_TASK_ID*.fastq.gz
