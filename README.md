@@ -4,6 +4,12 @@
 This repository contains information on Yunwei Dong's mangrove killifish project and is currently a work in progress.
 
 
+This repository contains the scripts to reproduce the data from Yunwei Dong's mangrove killifish project. Mangrove Killifish is a unique species that is able to leave its aquatic enviornment for damp environments such as mud or the inside of rotting logs. The primary goal of this study is to study the physiological and genomic mechanisms that support the terrestrial acclimation of Mangrove Killifish (_Kryptolebias Marmoratus_).
+
+The end result of this repository will be csv files that include geneIDs and a corresponding p-value.
+
+
+
 ## 1. Cloning Github repository to local account
 The first step is to clone the repository to your HPC.
 *Note* Keep a note of the location of the path to where you downloaded the github clone as this will be important for insuring the paths of all the scripts are constant.
