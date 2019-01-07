@@ -50,7 +50,6 @@ Time_treatment <- factor(sampleTable_treatment$Time, levels = c("0","1", "6", "2
 Time_treatment <- relevel(Time_treatment, ref = "0")
 Strain_treatment <- factor(sampleTable_treatment$Strain, levels = c("HON11", "FW"))
 designmatrix_treatment <- model.matrix(~Time_treatment*Strain_treatment)
-#designmatrix_treatment <- model.matrix(~Time_treatment+Strain_treatment+Time_treatment:Strain_treatment)
 colnames(designmatrix_treatment)
 
 # Fit voom for treatment
