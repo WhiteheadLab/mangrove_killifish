@@ -72,5 +72,24 @@ sbatch ./prvasquez/mangrove_killifish/scripts/samsort.sh
 ```
 sbatch ./prvasquez/mangrove_killifish/scripts/htseq_count.sh
 ```
+## 11. File formatting for Rstudio
+In the folder of the outputs from the previous step run this code. This will prepare the two files to be downloaded to a local computer to use the Rscript on.
+```
+cd ./prvasquez/mangrove_killifish/data/counts
 
+
+paste *.txt  | tail -n +2 |awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
+cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt | tr ' ' \\t > test2.out.txt 
+touch test.names.txt
+ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > test.names.txt
+```
+## 12. Rscript
+For the Rstudio part of this analysis, there are four files that need to be downloaded. The path to these files is listed below
+```
+./prvasquez/mangrove_killifish/data/counts/test2.out.txt
+./prvasquez/mangrove_killifish/data/counts/test.names.txt
+./prvasquez/mangrove_killifish/scripts/final_r_script.R
+./prvasquez/mangrove_killifish/design.matrixSRR08282018.csv
+```
+NOTE: For the Rscript, make sure to change the paths of the files in the script to the path to the files on your local computer.
 
