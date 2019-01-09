@@ -18,9 +18,9 @@ Downloading the data from NCBI requires the SRA Toolkit. If you're working from 
 prvasque@farm:~$ vdb-config -i
 ```
 
-This command brings up the configuration menu. Navagate to the change option in the bottom left and change the directory to 
+This command brings up the configuration menu. Navagate to the change option in the bottom right and change the directory to 
 ```
-./prvasquez/mangrove_killifish/raw_data/
+./mangrove_killifish/raw_data/
 ```
 
 Next we can run the script to download the read data.
