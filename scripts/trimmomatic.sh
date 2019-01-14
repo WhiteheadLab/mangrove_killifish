@@ -2,17 +2,14 @@
 #SBATCH -c 6
 #SBATCH --mem=16000
 #SBATCH -J trimmomatic
-#SBATCH -D /home/prvasque/projects/mangrove_killifish_project/raw_data/fastq/
-#SBATCH -o /home/prvasque/slurm-log/trimmomatic/trimmomatic_stdout-%j.txt
-#SBATCH -e /home/prvasque/slurm-log/trimmomatic/trimmomatic_stderr-%j.txt
 #SBATCH --time=12:00:00
 #SBATCH -p med
 #SBATCH -a 25941-26018
 
-DIR=./prvasquez/mangrove_killifish/data/fastq/
-outdir=./prvasquez/mangrove_killifish/data/trim/
+DIR=./mangrove_killifish/data/fastq/
+outdir=./mangrove_killifish/data/trim/
 
-adapter=./prvasquez/mangrove_killifish/NEBnextAdapt.fa
+adapter=./mangrove_killifish/NEBnextAdapt.fa
 
 cd $DIR
 
