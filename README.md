@@ -20,7 +20,7 @@ prvasque@farm:~$ vdb-config -i
 
 This command brings up the configuration menu. Navagate to the change option in the bottom right and change the directory to 
 ```
-./mangrove_killifish/raw_data/
+./mangrove_killifish/data/raw_data/
 ```
 
 Next we can run the script to download the read data.
