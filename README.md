@@ -25,26 +25,26 @@ This command brings up the configuration menu. Navagate to the change option in 
 
 Next we can run the script to download the read data.
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/download_sra.sh
+sbatch ./mangrove_killifish/scripts/download_sra.sh
 ```
 
 ## 3. Run fastqdump
 The downloaded files are in the .sra data format. For the next step they need to be in the .fastq format to do that, run the fastqdump script.
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/fastqdump.sh
+sbatch ./mangrove_killifish/scripts/fastqdump.sh
 ```
 
 ## 4. Run Trimmomatic
 Code to run trimmomatic
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/trimmomatic.sh
+sbatch ./mangrove_killifish/scripts/trimmomatic.sh
 ```
 
 ## 5. Download reference genome from NCBI
 The next step is to download the reference genome files from NCBI.
 This step has three commands that should all be run together in order.
 ```
-cd ./prvasquez/mangrove_killifish/data/ref/
+cd ./mangrove_killifish/data/ref/
 
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_marmoratus/latest_assembly_versions/GCF_001649575.1_ASM164957v1/GCF_001649575.1_ASM164957v1_genomic.gff.gz
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_marmoratus/latest_assembly_versions/GCF_001649575.1_ASM164957v1/GCF_001649575.1_ASM164957v1_genomic.fna.gz
@@ -54,28 +54,28 @@ gunzip GCF*
 
 ## 6. Map reads to reference genome using STAR alignment
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/starindex_korea_latest.sh
+sbatch ./mangrove_killifish/scripts/starindex_korea_latest.sh
 ```
 ## 7. Align sequences with Korea Genome
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/staralignment_latest_korea.sh
+sbatch ./mangrove_killifish/scripts/staralignment_latest_korea.sh
 ```
 ## 8. Samtools
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/sam_to_bam2.sh
+sbatch ./mangrove_killifish/scripts/sam_to_bam2.sh
 ```
 ## 9. Samtools sort
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/samsort.sh
+sbatch ./mangrove_killifish/scripts/samsort.sh
 ```
 ## 10. HTSeq-count
 ```
-sbatch ./prvasquez/mangrove_killifish/scripts/htseq_count.sh
+sbatch ./mangrove_killifish/scripts/htseq_count.sh
 ```
 ## 11. File formatting for Rstudio
 In the folder of the outputs from the previous step run this code. This will prepare the two files to be downloaded to a local computer to use the Rscript on.
 ```
-cd ./prvasquez/mangrove_killifish/data/counts
+cd ./mangrove_killifish/data/counts
 
 
 paste *.txt  | tail -n +2 |awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
@@ -86,10 +86,10 @@ ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > test.names.txt
 ## 12. Rscript
 For the Rstudio part of this analysis, there are four files that need to be downloaded. The path to these files is listed below
 ```
-./prvasquez/mangrove_killifish/data/counts/test2.out.txt
-./prvasquez/mangrove_killifish/data/counts/test.names.txt
-./prvasquez/mangrove_killifish/scripts/final_r_script.R
-./prvasquez/mangrove_killifish/design.matrixSRR08282018.csv
+./mangrove_killifish/data/counts/test2.out.txt
+./mangrove_killifish/data/counts/test.names.txt
+./mangrove_killifish/scripts/final_r_script.R
+./mangrove_killifish/design.matrixSRR08282018.csv
 ```
 NOTE: For the Rscript, make sure to change the paths of the files in the script to the path to the files on your local computer.
 
