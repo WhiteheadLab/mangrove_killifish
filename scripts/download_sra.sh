@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --mem=16000
 #SBATCH -J download_sra
-
+#SBATCH -t 12:00:00
 
 
 module load sratoolkit
