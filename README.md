@@ -14,6 +14,11 @@ git clone https://github.com/prvasquez/mangrove_killifish
 ## 2. Downloading initial data
 Downloading the data from NCBI requires the SRA Toolkit. If you're working from a shared cluster, the SRA toolkit may already be installed, if not, here is the [link](https://www.ncbi.nlm.nih.gov/sra/docs/toolkitsoft/).
 
+We need to make the directory that the ncbi data will be downloaded to
+```
+mkdir ./mangrove_killifish/data/raw_data/
+```
+Now to change the download directory
 ```
 prvasque@farm:~$ vdb-config -i
 ```
