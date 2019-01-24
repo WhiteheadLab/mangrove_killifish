@@ -9,7 +9,7 @@
 DIR=./mangrove_killifish/data/fastq/
 outdir=./mangrove_killifish/data/trim/
 
-adapter=./mangrove_killifish/NEBnextAdapt.fa
+adapter=./mangrove_killifish/files/NEBnextAdapt.fa
 
 cd $DIR
 
