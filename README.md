@@ -1,7 +1,9 @@
 This repository contains the scripts to reproduce the data from Yunwei Dong's mangrove killifish project. Mangrove Killifish is a unique species that is able to leave its aquatic enviornment for damp environments such as mud or the inside of rotting logs. The primary goal of this study is to study the physiological and genomic mechanisms that support the terrestrial acclimation of Mangrove Killifish (_Kryptolebias Marmoratus_).
 
-Experimental Design: For this experiment, fish were obtained from populations maintained at the Hagen Aqualab, at the University of Guelph. Two populations of fish, HON(n=38) and FW(n=40), were maintained in the laboratory in the salinity of their native habitat. Before exposure to air, tissues from fish were sampled as a control at 0 hours. Upon exposure to air, fish were maintained on moist filter paper in a plastic rearing container and tissues were sampled at 1 hour, 6 hours, 24 hours, 72 hours, and 168 hours for both populations.
+Experimental Design: For this experiment, fish were obtained from populations maintained at the Hagen Aqualab, at the University of Guelph. Two populations of fish, HON(n=38) and FW(n=40), were maintained in the laboratory in the salinity of their native habitat. Before exposure to air, tissues from fish were sampled as a control at 0 hours. Upon exposure to air, fish were maintained on moist filter paper in a plastic rearing container and tissues were sampled at 1 hour, 6 hours, 24 hours, 72 hours, and 168 hours for both populations. Each treatment group contained five biological replicates, except for HON11 72 hours and HON11 0 hours which had four replicates.
 A csv with the design matrix is available in the files folder.
+
+RNA was extracted using RNAeasy purification kits and RNA-seq libraries were prepared using the NEBnext RNA library preparation kits for Illumina. Sequence data was collected across four lanes of Illumina 4000.
 
 The end result of this repository will be csv files that include geneIDs and a corresponding p-value.
 
