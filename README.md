@@ -67,7 +67,7 @@ gunzip GCF*
 ```
 sbatch ./mangrove_killifish/scripts/starindex_korea_latest.sh
 ```
-## 7. Align sequences with Korea Genome
+## 7. Align sequences with the Reference Genome (Korea Genome)
 ```
 sbatch ./mangrove_killifish/scripts/staralignment_latest_korea.sh
 ```
