@@ -13,7 +13,7 @@ The end result of this repository will be csv files that include geneIDs and a c
 The first step is to clone the repository to your HPC.
 *Note* Keep a note of the location of the path to where you downloaded the github clone as this will be important for insuring the paths of all the scripts are constant.
 ```
-git clone https://github.com/prvasquez/mangrove_killifish
+git clone https://github.com/WhiteheadLab/mangrove_killifish
 ```
 
 ## 2. Downloading initial data
