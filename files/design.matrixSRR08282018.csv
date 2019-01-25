@@ -1,4 +1,4 @@
-ID,Strain,Time,Air
+ID (SRA Accession),Strain,Time (hours), Exposure to Air (A) or control in water (C)
 SRR6926016,HON11,1,A
 SRR6926017,HON11,1,A
 SRR6926018,HON11,1,A
