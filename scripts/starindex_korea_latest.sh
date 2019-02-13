@@ -7,7 +7,7 @@
 module load perlnew/5.18.4
 module load star/2.4.2a
 
-DIR=./mangrove_killifish/data/ref/
+DIR=./mangrove_killifish/data/ref
 
 cd $DIR
 
