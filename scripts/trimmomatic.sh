@@ -7,7 +7,7 @@
 #SBATCH -a 25941-26018
 
 DIR=./mangrove_killifish/data/fastq/
-outdir=./mangrove_killifish/data/trim/
+outdir=./mangrove_killifish/data/trim
 
 adapter=./mangrove_killifish/files/NEBnextAdapt.fa
 
