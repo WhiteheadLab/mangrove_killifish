@@ -102,5 +102,12 @@ For the Rstudio part of this analysis, there are four files that need to be down
 ./mangrove_killifish/scripts/final_r_script.R
 ./mangrove_killifish/files/design.matrixSRR08282018.csv
 ```
+To download these files you can use the `scp` command to move the files from a cluster to your personal machine.
+A sample is provided below on how to use scp.
+```
+scp prvasque@farm.cse.ucdavis.edu:/home/prvasque/projects/test_fish/mangrove_killifish/data/counts/test2.out.txt ~/Desktop/
+scp [location of file on cluster] [location you want to download the file to on your personal machine]
+```
+
 NOTE: For the Rscript, make sure to change the paths of the files in the script to the path to the files on your local computer.
 
