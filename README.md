@@ -100,7 +100,7 @@ For the Rstudio part of this analysis, there are four files that need to be down
 ./mangrove_killifish/data/counts/test2.out.txt
 ./mangrove_killifish/data/counts/test.names.txt
 ./mangrove_killifish/scripts/final_r_script.R
-./mangrove_killifish/design.matrixSRR08282018.csv
+./mangrove_killifish/files/design.matrixSRR08282018.csv
 ```
 NOTE: For the Rscript, make sure to change the paths of the files in the script to the path to the files on your local computer.
 
