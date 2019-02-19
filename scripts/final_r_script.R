@@ -1,6 +1,6 @@
 
-# Set directory
-setwd("/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/data") 
+# Set directory to where files that were downloaded are
+setwd() 
 
 # Install dependancies
 
@@ -8,17 +8,13 @@ library("BiocInstaller", lib.loc="/Library/Frameworks/R.framework/Versions/3.5/R
 
 biocLite("limma")
 biocLite("edgeR")
-install.packages("ggplot2")
-install.packages("gplots")
 install.packages("dendextend")
 
 library(limma)
 library(edgeR)
-library(ggplot2)
-library(gplots)
 library(dendextend)
 
-# Design Matrix
+# Set up Design Matrix
 sampleTable <- read.csv("design.matrixSRR08282018.csv", row.names = 1)
 data.frame(sampleTable)
 sampleTable_treatment <- subset(sampleTable, Air == "A" | Time == 0) # include time = 0 for the intercept group
