@@ -16,6 +16,11 @@ The first step is to clone the repository to your HPC.
 ```
 git clone https://github.com/WhiteheadLab/mangrove_killifish
 ```
+It is **VERY** important to remember to return to the directory where you cloned this github repository to before you run each step (except for Step #5 where you download the reference genome).
+
+For example, if you were in the directory /home/prvasque/ when you ran the `git clone` step, you should see the `mangrove_killifish` repository. **Do not** `cd` into this directory to run the scripts. If you do, the paths inside the script will be incorrect and the scripts will not run. 
+
+
 
 ## 2. Downloading initial data
 Downloading the data from NCBI requires the SRA Toolkit. If you're working from a shared cluster, the SRA toolkit may already be installed, if not, here is the [link](https://www.ncbi.nlm.nih.gov/sra/docs/toolkitsoft/).
@@ -63,11 +68,11 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/Kryptolebias_mar
 gunzip GCF*
 ```
 
-## 6. Map reads to reference genome using STAR alignment
+## 6. Index the reference Genome with STAR Index
 ```
 sbatch ./mangrove_killifish/scripts/starindex_korea_latest.sh
 ```
-## 7. Align sequences with the Reference Genome (Korea Genome)
+## 7. Align sequences to the Reference Genome with STAR Alignment
 ```
 sbatch ./mangrove_killifish/scripts/staralignment_latest_korea.sh
 ```
