@@ -12,7 +12,7 @@ module load star/2.4.2a
 outdir=./mangrove_killifish/data/alignment
 dir=./mangrove_killifish/data/trim
 
-genome_dir=./mangrove_killifish/ref
+genome_dir=./mangrove_killifish/data/ref
 
 STAR --genomeDir ${genome_dir} \
 	--runThreadN 24 --readFilesCommand zcat --sjdbInsertSave all \
