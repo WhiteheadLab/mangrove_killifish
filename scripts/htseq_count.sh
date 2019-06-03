@@ -16,7 +16,7 @@ REF_DIR=./mangrove_killifish/data/ref
 
 OUT_DIR=./mangrove_killifish/data/counts
 
-htseq-count --type=gene -i Dbxref -f bam -s no $DIR/SRR69${SLURM_ARRAY_TASK_ID}_sorted.bam \
+htseq-count --type=gene -i Dbxref -f bam -s no $DIR/SRR69${SLURM_ARRAY_TASK_ID}.bam \
 	$REF_DIR/GCF_001649575.1_ASM164957v1_genomic.gff > \
 	$OUT_DIR/SRR69${SLURM_ARRAY_TASK_ID}count.txt
 
