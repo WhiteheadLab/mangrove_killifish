@@ -10,7 +10,7 @@ module load bio
 
 echo SRR${SLURM_ARRAY_TASK_ID}
 
-DIR=./mangrove_killifish/data/sorted
+DIR=./mangrove_killifish/data/bam
 
 REF_DIR=./mangrove_killifish/data/ref
 
