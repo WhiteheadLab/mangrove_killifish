@@ -13,5 +13,5 @@ DIR=./mangrove_killifish/data
 name=SRR69${SLURM_ARRAY_TASK_ID}
 echo $name
 
-srun samtools view -bS -u ${DIR}/alignment/SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam | \
- samtools sort --output-fmt BAM -o ${DIR}/bam/SRR69${SLURM_ARRAY_TASK_ID}.bam
+samtools view -bS -u ${DIR}/alignment/SRR69${SLURM_ARRAY_TASK_ID}Aligned.out.sam | \
+ samtools sort --output-fmt BAM -n -o ${DIR}/bam/SRR69${SLURM_ARRAY_TASK_ID}.bam
