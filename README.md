@@ -77,18 +77,24 @@ sbatch ./mangrove_killifish/scripts/starindex_korea_latest.sh
 sbatch ./mangrove_killifish/scripts/staralignment_latest_korea.sh
 ```
 ## 8. Samtools
+
+Originally, the each sample was split into 4 different lanes for sequencing. They were then combined using the `samtools merge` command. This involved converting the data to a .bam file type and adding read groups. The dataset you downloaded from NCBI earlier in this pipeline consists of all the data so merging is not required.
+
+The next step involve changing the `Aligned.sam` output files from STAR alignment into a `.bam` output then sorting them. However, because we do not need to merge the data this step is actually redundant and you could skip it by including the flag `--outSAMtype BAM SortedByCoordinate` in the STAR alignment step. The files would then be ready for quantification using HTSeq.
+
+**However**, to keep with the original script, we will run samtools independantly of STAR Alignment.
+
+The `sam_to_bam2.sh` script will convert the `Aligned.sam` files from STAR alignment to a sorted `.bam` output
+
 ```
 sbatch ./mangrove_killifish/scripts/sam_to_bam2.sh
 ```
-## 9. Samtools sort
-```
-sbatch ./mangrove_killifish/scripts/samsort.sh
-```
-## 10. HTSeq-count
+
+## 9. HTSeq-count
 ```
 sbatch ./mangrove_killifish/scripts/htseq_count.sh
 ```
-## 11. File formatting for Rstudio
+## 10. File formatting for Rstudio
 In the folder of the outputs from the previous step run this code. This will prepare the two files to be downloaded to a local computer to use the Rscript on.
 ```
 cd ./mangrove_killifish/data/counts
@@ -99,7 +105,7 @@ cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt | tr ' ' \\
 touch test.names.txt
 ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > test.names.txt
 ```
-## 12. Rscript
+## 11. Rscript
 For the Rstudio part of this analysis, there are four files that need to be downloaded. The path to these files is listed below
 ```
 ./mangrove_killifish/data/counts/test2.out.txt
