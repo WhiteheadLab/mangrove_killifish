@@ -99,10 +99,13 @@ In the folder of the outputs from the previous step run this code. This will pre
 ```
 cd ./mangrove_killifish/data/counts
 
+# Add all the read counts to a single file
+paste *.txt  | awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
 
-paste *.txt  | tail -n +2 |awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' >test.out.txt
-cat SRR6925941count.txt | cut -f 1| tail -n +2| paste - test.out.txt | tr ' ' \\t > test2.out.txt 
-touch test.names.txt
+# Add the genes names in for the rows of read counts
+cat SRR6925941count.txt | cut -f 1 | paste - test.out.txt | tr ' ' \\t > test2.out.txt 
+
+# create column names
 ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > test.names.txt
 ```
 ## 11. Rscript
