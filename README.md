@@ -112,7 +112,7 @@ ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > names.txt
 cat names.txt <(echo) genes_counts.txt | tr ' ' \\t > final.out.txt
 ```
 ## 11. Rscript
-For the Rstudio part of this analysis, there are four files that need to be downloaded. The path to these files is listed below
+For the Rstudio part of this analysis, there are three files that need to be downloaded. The path to these files is listed below
 ```
 ./mangrove_killifish/data/counts/final.out.txt
 ./mangrove_killifish/scripts/final_r_script.R
