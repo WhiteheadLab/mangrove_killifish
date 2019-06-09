@@ -100,19 +100,21 @@ In the folder of the outputs from the previous step run this code. This will pre
 cd ./mangrove_killifish/data/counts
 
 # Add all the read counts to a single file
-paste *.txt  | awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' > allcounts.txt
+paste *.txt  | awk '{OFS="\t";for(i=2;i<=NF;i=i+2){printf "%s ", $i}{printf "%s", RS}}' > counts.txt
 
 # Add the genes names in for the rows of read counts
-cat SRR6925941count.txt | cut -f 1 | paste - allcounts.txt | tr ' ' \\t > genes_counts.txt 
+cat SRR6925941count.txt | cut -f 1 | paste - counts.txt | tr ' ' \\t > genes_counts.txt 
 
 # create column names
-ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > test.names.txt
+ls SRR* | sed 's/count\.txt//g' | tr '\n' \\t > names.txt
+
+# combine the names file with the counts file
+cat names.txt <(echo) genes_counts.txt | tr ' ' \\t > final.out.txt
 ```
 ## 11. Rscript
 For the Rstudio part of this analysis, there are four files that need to be downloaded. The path to these files is listed below
 ```
-./mangrove_killifish/data/counts/test2.out.txt
-./mangrove_killifish/data/counts/test.names.txt
+./mangrove_killifish/data/counts/final.out.txt
 ./mangrove_killifish/scripts/final_r_script.R
 ./mangrove_killifish/files/design.matrixSRR08282018.csv
 ```
