@@ -121,7 +121,7 @@ For the Rstudio part of this analysis, there are three files that need to be dow
 To download these files you can use the `scp` command to move the files from a cluster to your personal machine.
 A sample is provided below on how to use scp.
 ```
-scp prvasque@farm.cse.ucdavis.edu:/home/prvasque/projects/test_fish/mangrove_killifish/data/counts/test2.out.txt ~/Desktop/
+scp prvasque@farm.cse.ucdavis.edu:/home/prvasque/mangrove_killifish/data/counts/test2.out.txt ~/Desktop/
 scp [location of file on cluster] [location you want to download the file to on your personal machine]
 ```
 
