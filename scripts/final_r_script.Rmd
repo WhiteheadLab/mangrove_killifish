@@ -104,6 +104,8 @@ sum(dif.gene.treatment.time$adj.P.Val < 0.05)
 
 12. Create Output files
 
+Write out csv files that include a table of genes with corresponding p-values. (Don't forget to change path!)
+
 ```{r}
 write.csv(dif.gene.treatment.all, file = "/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/Work/dif.gene.treatment.all.csv")
 write.csv(dif.gene.treatment.strain, file = "/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/Work/dif.gene.treatment.strain.csv")
