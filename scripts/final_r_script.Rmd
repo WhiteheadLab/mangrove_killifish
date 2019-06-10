@@ -1,0 +1,103 @@
+---
+title: "final_r_script.rmd"
+author: "Picasso"
+date: "6/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+0. Load packages
+```{r}
+library(edgeR)
+```
+
+
+1. Design Matrix Input
+
+```{r}
+design.matrix <- read.csv("design.matrixSRR08282018.csv", row.names = 1)
+data.frame(design.matrix)
+design.matrix.treatment <- subset(design.matrix, Air == "A" | Time == 0)
+data.frame(design.matrix.treatment)
+```
+
+2. Load the read counts file
+```{r}
+read.counts <- read.csv("final.out.txt", head = TRUE, sep = "\t", row.names = 1)
+read.counts <- data.frame(read.counts)
+
+# NOTE: Due to the way the files were created you may have a column at the end titled "X" with just NAs as the read counts, if you do, run this next line of code. It will keep the first 78 columns that correspond with our 78 samples.
+
+read.counts <- read.counts[,1:78]
+```
+
+3. Subset the data
+
+Keep only the treatment data
+
+```{r}
+read.counts.treatment <- subset(read.counts, select = c(row.names(design.matrix.treatment)))
+```
+
+4. Filter data
+
+Filter the genes to keep only ones with expression. You should go from ~24,000 rows to ~19,000.
+
+```{r}
+read.counts.treatment <- read.counts.treatment[rowSums(read.counts.treatment > 10) > 5,]
+```
+
+5. Create a counts matrix and normallize between samples
+
+```{r}
+dge_treatment <- DGEList(counts = read.counts.treatment)
+dge_treatment <- calcNormFactors(dge_treatment)
+logcpm_treatment <- cpm(dge_treatment, prior.count = 1, log = TRUE)
+dge_treatment$samples
+```
+
+6. Combine design matrix with read counts file
+
+```{r}
+time.treatment <- factor(design.matrix.treatment$Time, levels = c("0","1","6","24","72", "164"))
+time.treatment <- relevel(time.treatment, ref = "0")
+strain.treatment <- factor(design.matrix.treatment$Strain, levels = c("HON11", "FW"))
+treatment.matrix <- model.matrix(~time.treatment * strain.treatment)
+colnames(treatment.matrix)
+```
+
+7. Fit voom
+
+```{r}
+v.treatment <- voom(dge_treatment, treatment.matrix, plot = TRUE)
+```
+8. lmFit
+
+```{r}
+fit.treatment <- lmFit(v.treatment, treatment.matrix)
+fit.treatment <- eBayes(fit.treatment)
+summary(decideTests(fit.treatment))
+```
+
+9. Diff expressed genes for full treatment
+
+```{r}
+dif.gene.treatment.all <- topTable(fit.treatment, coef = 8:12, adjust.method = "BH", number = Inf)
+sum(dif.gene.treatment.all$adj.P.Val < 0.05)
+```
+
+10. Diff expressed genes for Strain
+
+```{r}
+dif.gene.treatment.strain <- topTable(fit.treatment, coef = 7, adjust.method = "BH", number = Inf)
+sum(dif.gene.treatment.strain$adj.P.Val < 0.05)
+```
+
+11. Diff expressed genes for Time
+```{r}
+dif.gene.treatment.time <- topTable(fit.treatment, coef = 2:6, adjust.method = "BH", number = Inf)
+sum(dif.gene.treatment.time$adj.P.Val < 0.05)
+```
