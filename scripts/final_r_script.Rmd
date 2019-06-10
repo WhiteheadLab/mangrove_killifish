@@ -101,3 +101,11 @@ sum(dif.gene.treatment.strain$adj.P.Val < 0.05)
 dif.gene.treatment.time <- topTable(fit.treatment, coef = 2:6, adjust.method = "BH", number = Inf)
 sum(dif.gene.treatment.time$adj.P.Val < 0.05)
 ```
+
+12. Create Output files
+
+```{r}
+write.csv(dif.gene.treatment.all, file = "/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/Work/dif.gene.treatment.all.csv")
+write.csv(dif.gene.treatment.strain, file = "/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/Work/dif.gene.treatment.strain.csv")
+write.csv(dif.gene.treatment.time, file = "/Users/prvasquez/Whiteheadlab/Projects/Mangrove_killifish/Work/dif.gene.treatment.time.csv")
+```
